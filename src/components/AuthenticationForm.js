@@ -1,4 +1,4 @@
-import { useState} from "react";
+import { useState } from "react";
 
 const AuthenticationForm = () => {
     const [isLogin, setIsLogin] = useState(true);
@@ -53,7 +53,7 @@ const AuthenticationForm = () => {
                                 </div>
 
                                 <div className="pass-link">
-                                    <a href="#">Forgot password?</a>
+                                    <a href="">Forgot password?</a>
                                 </div>
 
                                 <div className="field btn">
@@ -61,12 +61,11 @@ const AuthenticationForm = () => {
                                     <input type="submit" value="Login" />
                                 </div>
 
-                                <div className="signup-link">
-                                    Not a member?{" "}
-                                    <a href="#" onClick={() => setIsLogin(false)}>
-                                        
+                                <div className="signup-link" >
+                                    Not a member?{" "} 
+                                    <a href="" onClick={() => setIsLogin(false)}> 
                                         Signup now
-                                    </a> 
+                                    </a>  
                                 </div>
                             </form>
                         ) : (

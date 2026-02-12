@@ -64,6 +64,7 @@ const AuthenticationForm = () => {
                                 <div className="signup-link">
                                     Not a member?{" "}
                                     <a href="#" onClick={() => setIsLogin(false)}>
+                                        
                                         Signup now
                                     </a> 
                                 </div>

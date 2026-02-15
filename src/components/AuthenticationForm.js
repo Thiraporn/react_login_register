@@ -5,6 +5,11 @@ const AuthenticationForm = () => {
 
     const handleSubmit = async (e) => {
         console.log("Login from");
+        console.log("Login from test-branch");
+        console.log("Login from test-branch2");
+        console.log("Login from new-branch");
+        console.log("######TEST######");
+        
     }
     return (
         <section>

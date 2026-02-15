@@ -5,6 +5,7 @@ const AuthenticationForm = () => {
 
     const handleSubmit = async (e) => {
         console.log("Login from");
+        console.log("Login from");
     }
     return (
         <section>

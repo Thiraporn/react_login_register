@@ -14,6 +14,7 @@ const AuthenticationForm = () => {
         console.log("Tes ABCD");
         console.log("@@@@@@");
         console.log("@@@@@@");
+        console.log("@@@@@@");
     }
     return (
         <section>

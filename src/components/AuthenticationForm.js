@@ -8,12 +8,9 @@ const AuthenticationForm = () => {
         console.log("Login from test-branch");
         console.log("Login from test-branch2");
         console.log("Login from new-branch");
-        console.log("######TEST######");
-        console.log("######TEST######");
-        console.log("@@@@@@");
+        console.log("######TEST######")
         console.log("Tes ABCD");
-        console.log("@@@@@@");
-        console.log("@@@@@@");
+        
     }
     return (
         <section>

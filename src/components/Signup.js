@@ -44,6 +44,7 @@ const Signup = () => {
     useEffect(() => {
         setValidPwd(PWD_REGEX.test(pwd));
         setValidMatch(pwd === matchPwd);
+        
     }, [pwd, matchPwd]);
 
     //clear the error message when the user input changes
@@ -57,10 +58,6 @@ const Signup = () => {
 
     const handleSignupSubmit = async (e) => {
         e.preventDefault();
-
-
-        console.log(emailSignup, pwd, matchPwd);
-        console.log(emailSignup, pwd, matchPwd);
 
         // signup success
         navigate(from, { replace: true });

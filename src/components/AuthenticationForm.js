@@ -1,14 +1,14 @@
-import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom"; 
+import Login from "./Login";
+import Signup from "./Signup";
+
 
 const AuthenticationForm = () => {
-    const [isLogin, setIsLogin] = useState(true);
+    const location = useLocation();
+    const navigate = useNavigate(); 
+    const isLogin = location.pathname === "/" || location.pathname === "/login";
+    const from = location.state?.from?.pathname || "/";
 
-    const handleSubmit = async (e) => {
-        console.log("Login from");
-        console.log("Login from test-branch");
-        console.log("Login from test-branch2");
-        console.log("Merge test branch to main");
-    }
     return (
         <section>
             <div className="wrapper">
@@ -23,78 +23,25 @@ const AuthenticationForm = () => {
                             type="radio"
                             name="slide"
                             id="login"
-                            checked={isLogin}
-                            onChange={() => setIsLogin(true)}
+                            checked={isLogin} 
+                            onChange={() => navigate("/login")}
                         />
                         <input
                             type="radio"
                             name="slide"
                             id="signup"
-                            checked={!isLogin}
-                            onChange={() => setIsLogin(false)}
+                            checked={!isLogin} 
+                            onChange={() => navigate("/signup")}
                         />
 
-                        <label htmlFor="login" className="slide login">
-                            Login
-                        </label>
-                        <label htmlFor="signup" className="slide signup">
-                            Signup
-                        </label>
+                        <label htmlFor="login" className="slide login"> Login </label>
+                        <label htmlFor="signup" className="slide signup"> Signup </label>
 
                         <div className="slider-tab"></div>
                     </div>
 
                     <div className="form-inner">
-                        {isLogin ? (
-                            <form className="login" onSubmit={handleSubmit}>
-                                <div className="field">
-                                    <input type="text" placeholder="Email Address" required />
-                                </div>
-
-                                <div className="field">
-                                    <input type="password" placeholder="Password" required />
-                                </div>
-
-                                <div className="pass-link">
-                                    {/* <a href="">Forgot password?</a> */}
-                                </div>
-
-                                <div className="field btn">
-                                    <div className="btn-layer"></div>
-                                    <input type="submit" value="Login" />
-                                </div>
-
-                                <div className="signup-link" >
-                                    Not a member?{" "} 
-                                    {/* <a href="" onClick={() => setIsLogin(false)}> 
-                                        Signup now
-                                    </a>   */}
-                                </div>
-                            </form>
-                        ) : (
-                            <form className="signup" onSubmit={handleSubmit}>
-                                <div className="field">
-                                    <input type="text" placeholder="Email Address" required />
-                                </div>
-
-                                <div className="field">
-                                    <input type="password" placeholder="Password" required />
-                                </div>
-
-                                <div className="field">
-                                    <input
-                                        type="password"
-                                        placeholder="Confirm password"
-                                        required
-                                    />
-                                </div>
-
-                                <div className="field btn">
-                                    <div className="btn-layer"></div>
-                                    <input type="submit" value="Signup" />
-                                </div>
-                            </form>
-                        )}
+                        {isLogin ? <Login /> : <Signup />}
                     </div>
                 </div>
             </div>

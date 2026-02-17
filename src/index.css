@@ -217,7 +217,34 @@
    cursor: pointer;
  }
 
+ .valid { 
+   background-color: rgb(255, 255, 255);
+   border-color: limegreen;
+ } 
+ .invalid { 
+   background-color: rgb(241, 221, 221);
+   border-color: red;
 
+ } 
+ .valid-icon {
+   color: #28a745;
+ }
+ .invalid-icon {
+   color: #dc3545;
+ }
+
+ .input-wrapper {
+   position: relative;
+   width: 100%;
+ }
+
+ .input-icon {
+   position: absolute;
+   right: 12px;
+   top: 50%;
+   transform: translateY(-50%);
+   pointer-events: none;
+ }
 
  /* @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap");
 

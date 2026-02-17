@@ -10,7 +10,6 @@ const Login = () => {
 
     const handleLoginSubmit = async (e) => {
         e.preventDefault();
-
         // login success
         navigate(from, { replace: true });
     }

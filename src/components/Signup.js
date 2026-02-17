@@ -59,7 +59,7 @@ const Signup = () => {
         e.preventDefault();
 
 
-        
+        console.log(emailSignup, pwd, matchPwd);
 
         // signup success
         navigate(from, { replace: true });

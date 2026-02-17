@@ -60,6 +60,7 @@ const Signup = () => {
 
 
         console.log(emailSignup, pwd, matchPwd);
+        console.log(emailSignup, pwd, matchPwd);
 
         // signup success
         navigate(from, { replace: true });

@@ -1,12 +1,14 @@
 import { useState, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import axios from "../api/axios";
 //regex for user and password, if the input is out of range, it will be rejected
-const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;//user reject when out of rage
+//const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;//user reject when out of rage
+const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;//password reject when out of rage
 
 //url for signup 
-const SIGNUP_URL = '/signup';
+const SIGNUP_URL = '/register';
 const Signup = () => {
     //+++++++++++++++++++++++++ Signup : START ++++++++++++++++++++++++++++++++++++
     //ref for signup
@@ -15,7 +17,7 @@ const Signup = () => {
 
 
     //state for signup  
-    const [emailSignup, setEmailSignup] = useState(false)
+    const [emailSignup, setEmailSignup] = useState('')
     const [validEmailSignup, setValidEmailSignup] = useState(false);
     const [emailSignupFocus, setEmailSignupFocus] = useState(false);
     //state for password and confirm password
@@ -37,7 +39,7 @@ const Signup = () => {
 
     //validate the email input
     useEffect(() => {
-        setValidEmailSignup(USER_REGEX.test(emailSignup));
+        setValidEmailSignup(EMAIL_REGEX.test(emailSignup));
     }, [emailSignup]);
 
     //validate the password input
@@ -56,23 +58,50 @@ const Signup = () => {
 
     const handleSignupSubmit = async (e) => {
         e.preventDefault();
+        const _username = EMAIL_REGEX.test(emailSignup);
+        const _password = PWD_REGEX.test(pwd);
+        if (!_username || !_password) {
+            setErrMsg("Invalid Entry");
+            return;
+        }
+        try {
+            const response = await axios.post(
+                SIGNUP_URL,
+                JSON.stringify({ user:emailSignup, pwd }),
+                {
+                    headers: { 'Content-Type': 'application/json' },
+                    withCredentials: true
+                });
+            console.log(response.data);
+            console.log(response.accessToken);
+            console.log(JSON.stringify(response));
+            // signup success
+            // navigate(from, { replace: true });
+        } catch (error) {
+            if (!error?.response) {
+                setErrMsg('No server response');
+            } else if (error.response?.status === 409) {
+                setErrMsg('Username Taken');
+            } else {
+                setErrMsg('Registration Failed');
+            }
+            errRef.current.focus();
 
-        // signup success
-        navigate(from, { replace: true });
+        }
     }
     //+++++++++++++++++++++++++ Signup : END +++++++++++++++++++++++++++++++++++++ 
     return (
         <form className="signup" onSubmit={handleSignupSubmit}>
-            <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">
+            <p ref={errRef} className={errMsg ? "instructions" : "offscreen"} aria-live="assertive">
                 {errMsg}
             </p>
             <div className="field input-wrapper"  >
                 <input type="text"
                     autoComplete="off"
-                    className={emailSignup.length === 0 ? "input valid" : validEmailSignup ? "input valid" : "input invalid"}
+                    className={  emailSignup.length === 0 ? "input valid" : validEmailSignup ? "input valid" : "input invalid"}
                     id="emailSignup"
                     placeholder="Email Address"
-                    ref={emailSignupRef}
+                    ref={emailSignupRef} 
                     onChange={(e) => setEmailSignup(e.target.value)}
                     onFocus={() => setEmailSignupFocus(true)}
                     onBlur={() => setEmailSignupFocus(false)}
@@ -93,9 +122,7 @@ const Signup = () => {
 
             <p id="uidnote" className={emailSignupFocus && emailSignup && !validEmailSignup ? "instructions" : "offscreen"}>
                 <FontAwesomeIcon icon={faInfoCircle} />
-                4 to 24 characters.<br />
-                Must begin with a letter.<br />
-                Letters, Numbers, Underscores, Hyphens allowed.<br />
+                 Please enter a valid email<br />
             </p>
 
 

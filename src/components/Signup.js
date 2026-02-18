@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-import useInput from "../hooks/useInput";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 //regex for user and password, if the input is out of range, it will be rejected
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;//user reject when out of rage
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;//password reject when out of rage
@@ -16,7 +15,7 @@ const Signup = () => {
 
 
     //state for signup  
-    const [emailSignup, setEmailSignup, emailSignupAttributeObj] = useInput('emailSignup', '');
+    const [emailSignup, setEmailSignup] = useState(false)
     const [validEmailSignup, setValidEmailSignup] = useState(false);
     const [emailSignupFocus, setEmailSignupFocus] = useState(false);
     //state for password and confirm password
@@ -35,6 +34,7 @@ const Signup = () => {
     useEffect(() => {
         emailSignupRef.current?.focus();
     }, []);
+
     //validate the email input
     useEffect(() => {
         setValidEmailSignup(USER_REGEX.test(emailSignup));
@@ -44,7 +44,7 @@ const Signup = () => {
     useEffect(() => {
         setValidPwd(PWD_REGEX.test(pwd));
         setValidMatch(pwd === matchPwd);
-        
+
     }, [pwd, matchPwd]);
 
     //clear the error message when the user input changes
@@ -52,9 +52,7 @@ const Signup = () => {
         setErrMsg('');
     }, [emailSignup, pwd, matchPwd]);
 
-    useEffect(() => {
-        setEmailSignup("");
-    }, []);
+
 
     const handleSignupSubmit = async (e) => {
         e.preventDefault();
@@ -70,44 +68,95 @@ const Signup = () => {
             </p>
             <div className="field input-wrapper"  >
                 <input type="text"
-                    className={validEmailSignup ? "input valid" : "input invalid"}
+                    autoComplete="off"
+                    className={emailSignup.length === 0 ? "input valid" : validEmailSignup ? "input valid" : "input invalid"}
                     id="emailSignup"
                     placeholder="Email Address"
                     ref={emailSignupRef}
-                    {...emailSignupAttributeObj}
-                    //value={emailSignup}
-                    // onChange={(e) => {
-                    //     console.log("typing...");
-                    //     setEmailSignup(e.target.value);
-                    // }}
+                    onChange={(e) => setEmailSignup(e.target.value)}
                     onFocus={() => setEmailSignupFocus(true)}
                     onBlur={() => setEmailSignupFocus(false)}
+                    aria-describedby="uidnote"
                     required
                 />
-                {!validEmailSignup && emailSignup && (
-                    <FontAwesomeIcon icon={faTimes} className="input-icon invalid-icon" />
-                )}
+
                 {validEmailSignup && emailSignup && (
                     <FontAwesomeIcon icon={faCheck} className="input-icon valid-icon" />
                 )}
+                {!validEmailSignup && emailSignup && (
+                    <FontAwesomeIcon icon={faTimes} className="input-icon invalid-icon" />
+                )}
+
+
 
             </div>
 
-            <div className="field">
-                <input type="password" placeholder="Password" required />
-            </div>
+            <p id="uidnote" className={emailSignupFocus && emailSignup && !validEmailSignup ? "instructions" : "offscreen"}>
+                <FontAwesomeIcon icon={faInfoCircle} />
+                4 to 24 characters.<br />
+                Must begin with a letter.<br />
+                Letters, Numbers, Underscores, Hyphens allowed.<br />
+            </p>
 
-            <div className="field">
+
+
+            <div className="field input-wrapper">
                 <input
                     type="password"
-                    placeholder="Confirm password"
-                    required
-                />
-            </div>
+                    id="password"
+                    autoComplete="off"
+                    placeholder="Password"
+                    className={pwd.length === 0 ? "input valid" : validPwd ? "input valid" : "input invalid"}
+                    onChange={(e) => setPwd(e.target.value)}
+                    onFocus={() => setPwdFocus(true)}
+                    onBlur={() => setPwdFocus(false)}
+                    aria-describedby="pwdnote"
+                    required />
+                {validPwd && pwd && (
+                    <FontAwesomeIcon icon={faCheck} className="input-icon valid-icon" />
+                )}
+                {!validPwd && pwd && (
+                    <FontAwesomeIcon icon={faTimes} className="input-icon invalid-icon" />
+                )}
 
-            <div className="field btn">
+            </div>
+            <p id="pwdnote" className={pwdFocus && !validPwd ? "instructions" : "offscreen"}>
+                <FontAwesomeIcon icon={faInfoCircle} />
+                8 to 24 characters.<br />
+                Must include uppercase and lowercase letters, a number and special characters.<br />
+                Allowed Special characters:
+                <span aria-label="exclamation mark">!</span>
+                <span aria-label="at symbol">@</span>
+                <span aria-label="hashtag">#</span>
+                <span aria-label="dollar sign">$</span>
+                <span aria-label="percent">%</span>
+            </p>
+            <div className="field input-wrapper">
+                <input
+                    type="password"
+                    id="confirm_pwd"
+                    placeholder="Confirm password"
+                    className={validMatch ? "input valid" : "input invalid"}
+                    onChange={(e) => setMatchPwd(e.target.value)}
+                    onFocus={() => setMatchFocus(true)}
+                    onBlur={() => setMatchFocus(false)}
+                    aria-describedby="confirmnote"
+                    required />
+                {validMatch && matchPwd && (
+                    <FontAwesomeIcon icon={faCheck} className="input-icon valid-icon" />
+                )}
+                {validMatch || !matchPwd && (
+                    <FontAwesomeIcon icon={faTimes} className="input-icon invalid-icon" />
+                )}
+
+            </div>
+            <p id="confirmnote" className={matchFocus && !validMatch ? "instructions" : "offscreen"}>
+                <FontAwesomeIcon icon={faInfoCircle} />
+                Must match password in put field.
+            </p>
+            <div className={`field btn ${(!validEmailSignup || !validPwd || !validMatch) ? "disabled" : ""}`}>
                 <div className="btn-layer"></div>
-                <input type="submit" value="Signup" />
+                <input type="submit" value="Signup" disabled={!validEmailSignup || !validPwd || !validMatch} />
             </div>
         </form>
     )

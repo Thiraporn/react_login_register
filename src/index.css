@@ -217,18 +217,21 @@
    cursor: pointer;
  }
 
- .valid { 
+ .valid {
    background-color: rgb(255, 255, 255);
    border-color: limegreen;
- } 
- .invalid { 
+ }
+
+ .invalid {
    background-color: rgb(241, 221, 221);
    border-color: red;
 
- } 
+ }
+
  .valid-icon {
    color: #28a745;
  }
+
  .invalid-icon {
    color: #dc3545;
  }
@@ -244,6 +247,72 @@
    top: 50%;
    transform: translateY(-50%);
    pointer-events: none;
+ }
+
+ /* 🔴 Disabled state */
+ form .btn.disabled .btn-layer {
+   background: #ccc;
+   left: -100%;
+ }
+
+ form .btn.disabled input[type="submit"] {
+   cursor: not-allowed;
+   opacity: 0.6;
+ }
+
+ /* .instructions {
+   font-size: 0.75rem;
+   border-radius: 0.5rem;
+   background: #000;
+   color: #fff;
+   padding: 0.25rem;
+   position: relative;
+   bottom: -10px;
+ }
+
+ .instructions>svg {
+   margin-right: 0.25rem;
+ }
+
+ .offscreen {
+   position: absolute;
+   left: -9999px;
+ } */
+
+ /* .instructions {
+   position: absolute;
+   top: 110%;
+   left: 0;
+   width: 100%;
+   background: #222;
+   color: #fff;
+   padding: 10px;
+   border-radius: 6px;
+   font-size: 0.8rem;
+   z-index: 10;
+ } */
+ .instructions {
+   margin-top: 6px;
+   padding: 10px;
+   font-size: 0.85rem;
+   border-radius: 6px;
+   background: #222;
+   color: #fff;
+   width: 100%;
+   box-sizing: border-box;
+   line-height: 1.4; 
+   background: rgba(239, 68, 68, 0.1);
+   color: #DC2626;
+   border: 1px solid rgba(239, 68, 68, 0.4);
+ }
+
+ .instructions>svg {
+   margin-right: 0.25rem;
+ }
+
+ .offscreen {
+   position: absolute;
+   left: -9999px;
  }
 
  /* @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap");

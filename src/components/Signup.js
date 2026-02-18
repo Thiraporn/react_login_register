@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import axios from "../api/axios";
 //regex for user and password, if the input is out of range, it will be rejected
 //const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;//user reject when out of rage
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$/;
@@ -66,7 +67,7 @@ const Signup = () => {
         try {
             const response = await axios.post(
                 SIGNUP_URL,
-                JSON.stringify({ emailSignup, pwd }),
+                JSON.stringify({ user:emailSignup, pwd }),
                 {
                     headers: { 'Content-Type': 'application/json' },
                     withCredentials: true
@@ -91,7 +92,7 @@ const Signup = () => {
     //+++++++++++++++++++++++++ Signup : END +++++++++++++++++++++++++++++++++++++ 
     return (
         <form className="signup" onSubmit={handleSignupSubmit}>
-            <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">
+            <p ref={errRef} className={errMsg ? "instructions" : "offscreen"} aria-live="assertive">
                 {errMsg}
             </p>
             <div className="field input-wrapper"  >

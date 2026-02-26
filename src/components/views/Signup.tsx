@@ -1,7 +1,9 @@
 import { useState, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
-import axios from "../api/axios";
+import axios from "@/api/axios";
+import { useNavigate } from "react-router-dom";
+
 //regex for user and password, if the input is out of range, it will be rejected
 //const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;//user reject when out of rage
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$/;
@@ -9,11 +11,12 @@ const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;//pa
 
 //url for signup 
 const SIGNUP_URL = '/register';
-const Signup = () => {
+export const Signup = () => {
+    const navigate = useNavigate();
     //+++++++++++++++++++++++++ Signup : START ++++++++++++++++++++++++++++++++++++
     //ref for signup
-    const emailSignupRef = useRef();
-    const errRef = useRef();
+    const emailSignupRef = useRef<HTMLInputElement | null>(null);
+    const errRef = useRef<HTMLInputElement | null>(null);
 
 
     //state for signup  
@@ -56,7 +59,7 @@ const Signup = () => {
 
 
 
-    const handleSignupSubmit = async (e) => {
+    const handleSignupSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const _username = EMAIL_REGEX.test(emailSignup);
         const _password = PWD_REGEX.test(pwd);
@@ -67,25 +70,26 @@ const Signup = () => {
         try {
             const response = await axios.post(
                 SIGNUP_URL,
-                JSON.stringify({ user:emailSignup, pwd }),
+                JSON.stringify({ user: emailSignup, pwd }),
                 {
                     headers: { 'Content-Type': 'application/json' },
                     withCredentials: true
                 });
             console.log(response.data);
-            console.log(response.accessToken);
+            console.log(response.data.accessToken);
             console.log(JSON.stringify(response));
             // signup success
-            // navigate(from, { replace: true });
-        } catch (error) {
-            if (!error?.response) {
-                setErrMsg('No server response');
-            } else if (error.response?.status === 409) {
-                setErrMsg('Username Taken');
+            // redirect ไป login
+            navigate("/login", { replace: true });
+        } catch (error: any) {
+            if (!error.response) {
+                setErrMsg("No Server Response");
+            } else if (error.response.status === 409) {
+                setErrMsg("Username Taken");
             } else {
-                setErrMsg('Registration Failed');
-            }
-            errRef.current.focus();
+                setErrMsg("Registration Failed");
+            } 
+            errRef.current?.focus();
 
         }
     }
@@ -98,10 +102,10 @@ const Signup = () => {
             <div className="field input-wrapper"  >
                 <input type="text"
                     autoComplete="off"
-                    className={  emailSignup.length === 0 ? "input valid" : validEmailSignup ? "input valid" : "input invalid"}
+                    className={emailSignup.length === 0 ? "input valid" : validEmailSignup ? "input valid" : "input invalid"}
                     id="emailSignup"
                     placeholder="Email Address"
-                    ref={emailSignupRef} 
+                    ref={emailSignupRef}
                     onChange={(e) => setEmailSignup(e.target.value)}
                     onFocus={() => setEmailSignupFocus(true)}
                     onBlur={() => setEmailSignupFocus(false)}
@@ -122,7 +126,7 @@ const Signup = () => {
 
             <p id="uidnote" className={emailSignupFocus && emailSignup && !validEmailSignup ? "instructions" : "offscreen"}>
                 <FontAwesomeIcon icon={faInfoCircle} />
-                 Please enter a valid email<br />
+                Please enter a valid email<br />
             </p>
 
 
@@ -188,5 +192,3 @@ const Signup = () => {
         </form>
     )
 }
-
-export default Signup

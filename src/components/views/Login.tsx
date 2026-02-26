@@ -1,14 +1,22 @@
 
-import useInput from "../hooks/useInput";
+import useInput from "../../hooks/useInput";
+import { useNavigate, useLocation } from "react-router-dom";
 //url for login
 const LOGIN_URL = '/authen';
 
-const Login = () => {
+export const Login = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = (location.state as any)?.from?.pathname || "/";
+
     //+++++++++++++++++++++++++ Login : START ++++++++++++++++++++++++++++++++++++
     const [emailLogin, resetEmailLogin, emailLoginAttributeObj] = useInput('emailLogin', '');
+   
+
     //+++++++++++++++++++++++++ Login : END ++++++++++++++++++++++++++++++++++++++ 
 
-    const handleLoginSubmit = async (e) => {
+    const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>
+    ) => {
         e.preventDefault();
         // login success
         navigate(from, { replace: true });
@@ -41,6 +49,4 @@ const Login = () => {
             </div>
         </form>
     )
-}
-
-export default Login
+} 

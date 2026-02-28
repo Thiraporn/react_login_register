@@ -1,5 +1,5 @@
-export * from "./CompanyLogo";
+export * from "./Logo";
 export * from "./MenuLinks";
 export * from "./MobileMenu";
-export * from "./HamburgerButton";
+export * from "./MenuResponsive";
 export * from "./User";

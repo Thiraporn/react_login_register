@@ -12,7 +12,7 @@ export const MenuLinks = ({ menuLinks }: MenuLinksProps) => {
           <div className="hidden group-hover:block">
             <SubLinksBox
               subLinks={link.subLinks}
-              extraLinks={link.extraLinks ?? []}
+              extraLinks={link.extraLinks}
             />
           </div>
           

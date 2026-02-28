@@ -1,9 +1,9 @@
 import { useLocation, useNavigate } from "react-router-dom"; 
-import Login from "./Login";
-import Signup from "./Signup";
+import {Signup,Login} from "./";
+ 
 
 
-const AuthenticationForm = () => {
+export const  AuthenticationForm = () => {
     const location = useLocation();
     const navigate = useNavigate(); 
     const isLogin = location.pathname === "/" || location.pathname === "/login";
@@ -11,6 +11,7 @@ const AuthenticationForm = () => {
 
     return (
         <section>
+            <div className="authen-content">
             <div className="wrapper">
                 <div className="title-text">
                     <div className="title login">Login Form</div>
@@ -45,6 +46,6 @@ const AuthenticationForm = () => {
                     </div>
                 </div>
             </div>
+            </div>
         </section>);
-}
-export default AuthenticationForm
+} 

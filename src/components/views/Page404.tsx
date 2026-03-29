@@ -39,7 +39,7 @@ export const Page404 = () => {
                     <h1 className="text-4xl font-bold text-gray-800 mb-6">Oops! Page Not Found</h1>
                     <p className="text-lg text-gray-600 mb-8">The page you're looking for seems to have gone on a little adventure. Don't
                         worry, we'll help you find your way back home.</p>
-                    <Link to="/"
+                    <Link to="/home"
                         className="inline-block bg-indigo-600 text-white font-semibold px-6 py-3 rounded-md hover:bg-indigo-700 transition-colors duration-300">
                         Go Back Home
                     </Link>

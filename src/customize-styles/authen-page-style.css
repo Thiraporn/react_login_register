@@ -3,7 +3,7 @@
 .authen-content * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
 }
 
@@ -11,8 +11,8 @@
     display: grid;
     height: 100%;
     width: 100%;
-    place-items: center; 
-    min-height: 100vh;
+    place-items: center;
+    min-height: 100vh; 
 }
 
 
@@ -113,6 +113,7 @@
 .authen-content .wrapper .form-container {
     width: 100%;
     overflow: hidden;
+    padding: 4px !important;
 }
 
 .authen-content .form-container .form-inner {

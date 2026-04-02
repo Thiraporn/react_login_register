@@ -11,16 +11,18 @@ export const Login = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const from = (location.state as any)?.from?.pathname || "/";
+    
 
     const emailLoginRef = useRef<HTMLInputElement | null>(null);
     const errRef = useRef<HTMLInputElement | null>(null);
+     
     //+++++++++++++++++++++++++ Login : START ++++++++++++++++++++++++++++++++++++
-    const [emailLogin, resetEmailLogin, emailLoginAttributeObj] = useInput('emailLogin', '');
+    const [emailLogin, setEmailLogin, emailLoginAttributeObj] = useInput('emailLogin', ''); 
     const [pwd, setPwd] = useState('');
     const [errMsg, setErrMsg] = useState('');
 
     //+++++++++++++++++++++++++ Login : END ++++++++++++++++++++++++++++++++++++++ 
-    const [check, toggleCheck] = useToggle('persist', false);
+   const [check, toggleCheck] = useToggle('persist', false);
 
 
     useEffect(() => {
@@ -49,7 +51,7 @@ export const Login = () => {
             //const roles = response?.data?.roles;
             setAuth({ user: emailLogin, accessToken });
             //setUser('');
-            resetEmailLogin();
+            setEmailLogin('');
             setPwd('');
             //setSuccess(true);
             // login success
@@ -80,7 +82,7 @@ export const Login = () => {
                 <input type="text" id="emailLogin"
                     placeholder="Email Address"
                     ref={emailLoginRef}
-                    {...emailLoginAttributeObj}
+                   {...emailLoginAttributeObj}
                     required />
             </div>
 

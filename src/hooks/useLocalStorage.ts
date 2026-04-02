@@ -3,7 +3,8 @@ import { useState, useEffect } from "react";
 const getLocalStorage = (key, initValue) => {
 
     //SSR Next JS
-    if (typeof window === 'undefined') return initValue;
+    if (typeof window === 'undefined') return initValue; 
+
     // undefined
     if (localStorage.getItem(key) === 'undefined') return initValue;
     // empty string 
@@ -27,18 +28,27 @@ const getLocalStorage = (key, initValue) => {
 const useLocalStorage = (key, initValue) => {
     const [value, setValue] = useState(() => {
         return getLocalStorage(key, initValue);
-    });
-
-    // useEffect(() => {
-    //     localStorage.setItem(key, JSON.stringify(value));
-    // }, [key, value]);
+    }); 
     useEffect(() => {
-        if (value === false) {
-            localStorage.removeItem(key);
-        } else {
-            localStorage.setItem(key, JSON.stringify(value));
-        }
+            localStorage.setItem(key, JSON.stringify(value)); 
+            // 🔴 check persist from localStorage
+            const persist = JSON.parse(localStorage.getItem('persist') || 'false');
+
+            // ❗ ถ้า persist = false → ไม่ต้อง set key อื่น
+            if (persist === false && key !== 'persist') {
+                Object.keys(localStorage).forEach(k => {
+                        if (k !== 'persist') {
+                            localStorage.setItem(k, JSON.stringify(initValue));
+                        }
+                    });
+                localStorage.setItem('persist', JSON.stringify(persist)); 
+                return;
+            }
+
+        //localStorage.setItem(key, JSON.stringify(value));
     }, [key, value]);
+
+ 
 
 
     return [value, setValue];
@@ -46,7 +56,7 @@ const useLocalStorage = (key, initValue) => {
 
 }
 const isEmpty = (value) => {
-    // null หรือ undefined
+    // null or undefined
     if (null == value) return true;
 
     // string

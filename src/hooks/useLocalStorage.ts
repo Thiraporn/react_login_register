@@ -3,13 +3,8 @@ import { useState, useEffect } from "react";
 const getLocalStorage = (key, initValue) => {
 
     //SSR Next JS
-    if (typeof window === 'undefined') return initValue;
-     
-    const persist = JSON.parse(localStorage.getItem('persist') || 'false'); 
-    // ❗ ถ้า persist = false → ห้ามอ่าน key อื่น
-    if (persist === false && key !== 'persist') {
-        return initValue;
-    }  
+    if (typeof window === 'undefined') return initValue; 
+
     // undefined
     if (localStorage.getItem(key) === 'undefined') return initValue;
     // empty string 
@@ -34,9 +29,9 @@ const useLocalStorage = (key, initValue) => {
     const [value, setValue] = useState(() => {
         return getLocalStorage(key, initValue);
     }); 
-        useEffect(() => {
+    useEffect(() => {
             localStorage.setItem(key, JSON.stringify(value)); 
-            // 🔴 check persist จาก localStorage
+            // 🔴 check persist from localStorage
             const persist = JSON.parse(localStorage.getItem('persist') || 'false');
 
             // ❗ ถ้า persist = false → ไม่ต้อง set key อื่น
@@ -49,7 +44,8 @@ const useLocalStorage = (key, initValue) => {
                 localStorage.setItem('persist', JSON.stringify(persist)); 
                 return;
             }
- 
+
+        //localStorage.setItem(key, JSON.stringify(value));
     }, [key, value]);
 
  
@@ -60,7 +56,7 @@ const useLocalStorage = (key, initValue) => {
 
 }
 const isEmpty = (value) => {
-    // null หรือ undefined
+    // null or undefined
     if (null == value) return true;
 
     // string

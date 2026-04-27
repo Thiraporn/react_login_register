@@ -1,3 +1,4 @@
+import useLogout from "@/hooks/useLogout";
 import {
   IdentificationIcon,
   SunIcon,
@@ -5,10 +6,19 @@ import {
   AdjustmentsVerticalIcon,
   ExclamationCircleIcon,
 } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 // import { useState } from "react";
 
 export const User = () => {
+  const navigate = useNavigate();
+  const logout = useLogout();
+
+  const signOut = async () => {
+    //if use more components, this should be in context
+    //axios to => logout endpoint
+    await logout();
+    navigate('/login');
+  }
   // const [theme, setTheme] = useState(localStorage.getItem("theme"));
 
   const ms = new Date().getUTCMilliseconds();
@@ -38,8 +48,7 @@ export const User = () => {
       title: "Logout",
       icon: <ExclamationCircleIcon />,
       color: "bg-red-300 dark:bg-red-800",
-      link: "/login",
-      //onclick: () => { },
+      onclick: signOut 
     },
   ];
 
@@ -71,9 +80,10 @@ export const User = () => {
           <li
             key={item.title}
             className="flex items-center justify-start h-16 font-bold cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-800 rounded-xl"
-          //onClick={item.onclick}
-          >
-            <Link
+            //onClick={item.onclick}
+          >  
+          {item.link ? ( 
+             <Link
               to={item.link}
               className="flex items-center justify-start h-16 font-bold 
                  hover:bg-slate-200 dark:hover:bg-slate-800 
@@ -91,6 +101,22 @@ export const User = () => {
               </p>
 
             </Link>
+            ) : (
+              <button
+                onClick={item.onclick}
+                className="flex items-center w-full h-full text-left"
+              >
+                <div
+                  className={`h-10 w-10 ml-5 flex items-center justify-center rounded-lg ${item.color}`}
+                >
+                  {item.icon}
+                </div>
+
+                <p className="ml-5 text-gray-600 dark:text-gray-200">
+                  {item.title}
+                </p>
+              </button>
+            )}
           </li>
 
         ))}

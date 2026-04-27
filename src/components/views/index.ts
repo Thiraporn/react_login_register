@@ -6,3 +6,4 @@ export * from "./Page404";
 export * from "./Page500";
 export * from "./Profile";
 export * from "./Unauthorized";
+export * from "./PersistLogin";

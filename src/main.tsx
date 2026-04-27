@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import "@/customize-styles/tailwand.css";
+import "@/customize-styles/tailwind.css";
 import "@/customize-styles/authen-page-style.css";  
 import App from './App';
 import { AuthProvider } from './context/AuthProvider';

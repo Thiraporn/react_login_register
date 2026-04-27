@@ -1,4 +1,41 @@
+import { useState, useEffect } from "react";
+import useAxiosPrivate from "@/hooks/useAxiosPrivate";
+import { useNavigate, useLocation } from "react-router-dom";
+
 export const Profile = () => {
+  const [users, setUsers] = useState([]);
+    const axiosPrivate = useAxiosPrivate();
+    const navigate = useNavigate();
+    const location = useLocation();
+    useEffect(() => {
+        let isMounted = true;
+        const controller = new AbortController();
+        const getUsers = async () => {
+            try {
+                const response = await axiosPrivate.post('/users', {
+                    signal: controller.signal
+                });
+                const userNames = response.data.map(user => user.username);
+                console.log(response.data);
+                isMounted && setUsers(userNames);
+            } catch (error: any) {
+                // console.log(error);
+                // navigate('/login', { state: { from: location }, replace: true })
+                //console.log("GET USERS ERROR:", error); 
+                // if (error?.response?.status === 401 ||
+                //     error?.response?.status === 403) {
+                //     navigate('/login', { state: { from: location }, replace: true });
+                // }
+
+            }
+        }
+        getUsers();
+        return () => {
+            isMounted = false;
+            controller.abort();
+        };
+
+    }, []);
   return (
 
     <main className="h-[calc(100vh-4em)] flex flex-col justify-center items-center">

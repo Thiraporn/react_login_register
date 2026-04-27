@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useState } from "react";
 type AuthType = {
     user: string | null;
-    accessToken?: string;
+    accessToken: string | null;
 };
 
 type AuthContextType = {
@@ -15,9 +15,9 @@ type Props = {
 const AuthContext = createContext<AuthContextType | null>(null);
 export const AuthProvider = ({ children }) => {
     const [auth, setAuth] = useState<AuthType>({
-        user: null, accessToken: undefined,
+        user: null, accessToken: null,
     });
-    // const [persist, setPersist] = useState(JSON.parse(localStorage.getItem("persist")) || false);
+    //const [persist, setPersist] = useState(JSON.parse(localStorage.getItem("persist")) || false);
 
     return (
         // <AuthContext.Provider value={{ auth, setAuth,persist,setPersist }}>

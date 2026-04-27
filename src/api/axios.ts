@@ -1,11 +1,14 @@
 import axios from "axios";
 
 //const BASE_URL = 'http://localhost:3500';
-const BASE_URL = 'https://expressjs-authenjwtswithmongodb.onrender.com';
+const BASE_URL = 'http://localhost:9090';
+//const BASE_URL = 'https://expressjs-authenjwtswithmongodb.onrender.com';
 
 export default axios.create({ 
     baseURL: BASE_URL
 });
+
+
 
 export const axiosPrivate = axios.create({
     baseURL: BASE_URL,
@@ -15,3 +18,4 @@ export const axiosPrivate = axios.create({
     withCredentials: true
 });
  
+

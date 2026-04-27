@@ -10,12 +10,7 @@ export const PersistLogin = () => {
     const [isLoading, setIsLoading] = useState(true);
     const refresh = useRefreshToken();
     const { auth  } = useAuth();
-    //const [persist] = useLocalStorage('persist',false)
-    const persist = JSON.parse(localStorage.getItem("persist") || "false"); 
-    const emailLogin = JSON.parse(localStorage.getItem("emailLogin") || "false"); 
-    console.log("persist  in PersistLogin =", persist);
-    console.log("emailLogin  in PersistLogin =", emailLogin);
-    //const persist = JSON.parse(localStorage.getItem("persist") || "false");
+    const [persist] = useLocalStorage('persist',false)
     // refresh จะเกิด 2 กรณีหลัก:
     //1) ตอนเข้าเว็บ (PersistLogin)
     //2) ตอนยิง API แล้วโดน 403 (token หมดอายุ)

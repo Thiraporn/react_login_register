@@ -25,7 +25,28 @@ export const User = () => {
 
   const items = [
     {
-      title: "Profile",
+      title: "FormFrom Elements",
+      icon: <IdentificationIcon />,
+      color: "bg-indigo-300 dark:bg-indigo-800",
+      link: "/FromElements",
+      //onclick: () => {},
+    }
+    ,{
+      title: "Menus Settings",
+      icon: <IdentificationIcon />,
+      color: "bg-indigo-300 dark:bg-indigo-800",
+      link: "/MenusSettings",
+      //onclick: () => {},
+    }
+    , {
+      title: "New Users",
+      icon: <IdentificationIcon />,
+      color: "bg-indigo-300 dark:bg-indigo-800",
+      link: "/Unauthorized",
+      //onclick: () => {},
+    }
+    , {
+      title: "New Roles",
       icon: <IdentificationIcon />,
       color: "bg-indigo-300 dark:bg-indigo-800",
       link: "/profile",
@@ -38,7 +59,7 @@ export const User = () => {
     //   onclick: () => onChangeThemeClick(),
     // },
     {
-      title: "Settings",
+      title: "Roles Settings",
       icon: <AdjustmentsVerticalIcon />,
       color: "bg-fuchsia-300 dark:bg-fuchsia-800",
       link: "/settings",

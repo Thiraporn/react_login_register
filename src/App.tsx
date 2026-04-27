@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import { Container } from "@/components/layout";
-import { Home, AuthenticationForm, Page404, Page500, Profile, Unauthorized,PersistLogin } from "@/components/views";
-import NormalizePath from "@/context/NormalizePath";   
+import { Home, AuthenticationForm, Page404, Page500, Profile, Unauthorized,PersistLogin,MenusSettings ,FromElements} from "@/components/views";
+import NormalizePath from "@/context/NormalizePath";      
 function App() {  
   return (
     <> 
@@ -18,6 +18,8 @@ function App() {
               {/* <Route path="/" element={<Home />} /> */}
               <Route path="/home" element={<Home />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/MenusSettings" element={<MenusSettings />} />
+              <Route path="/FromElements" element={<FromElements />} />
               <Route path="/Page500" element={<Page500 />} /> 
             </Route>
           </Route>

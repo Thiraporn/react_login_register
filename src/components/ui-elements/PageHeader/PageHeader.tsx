@@ -16,10 +16,10 @@ export default function PageHeader({ title, breadcrumbs }: PageHeaderProps) {
     <div className="px-6 py-4 border-b flex items-center justify-between">
         
       {/* Left: Title */}
-      <h1 className="text-xl font-semibold">{title}</h1>
+      {/* <h1 className="text-xl font-semibold">{title}</h1> */}
 
       {/* Right: Breadcrumb */}
-      <div className="flex items-center text-sm text-gray-500 gap-2">
+      <div className="flex items-center text-sm text-gray-500 gap-2 ml-auto">
         {breadcrumbs.map((item, index) => (
           <div key={index} className="flex items-center gap-2">
             {item.path ? (

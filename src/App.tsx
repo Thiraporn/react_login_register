@@ -13,14 +13,14 @@ function App() {
           <Route path="/login" element={<AuthenticationForm />} />
           <Route path="/signup" element={<AuthenticationForm />} />
           <Route path='/unauthorized' element={<Unauthorized />} />
+          <Route path="/Page500" element={<Page500 />} /> 
           <Route element={<Container />}>
             <Route element={<PersistLogin />}> 
               {/* <Route path="/" element={<Home />} /> */}
               <Route path="/home" element={<Home />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/MenusSettings" element={<MenusSettings />} />
-              <Route path="/FromElements" element={<FromElements />} />
-              <Route path="/Page500" element={<Page500 />} /> 
+              <Route path="/FromElements" element={<FromElements />} /> 
             </Route>
           </Route>
           <Route path="*" element={<Page404 />} />

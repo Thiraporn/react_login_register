@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import { useNavigate, useLocation } from "react-router-dom";
-import PageHeader from "../ui-elements/PageHeader/PageHeader";
-
+import { PageHeader, Input,Radio, TextArea, InputCombo} from "@/components/ui-elements";
+ 
 export const MenusSettings = () => {
   const [users, setUsers] = useState([]);
     const axiosPrivate = useAxiosPrivate();
@@ -45,81 +45,73 @@ export const MenusSettings = () => {
         <PageHeader
         title="Menus Settings"
         breadcrumbs={[
-            { label: "Home", path: "/" },
+            { label: "Home", path: "/Home" },
             { label: "Menus Settings" }
         ]}
       />
 
-        {/* Section: Product Description */}
-        <div className="bg-white rounded-2xl shadow p-6">
-          <h2 className="text-lg font-semibold mb-4">Products Description</h2>
+        {/* Section: Menus Description */}
+        <div className="bg-white rounded-2xl shadow p-6 space-y-4">
+          <h2 className="text-lg font-semibold mb-4">Menus Description</h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input placeholder="Product Name" className="input" />
-            <select className="input">
-              <option>Select Category</option>
-            </select>
-
-            <select className="input">
-              <option>Select Brand</option>
-            </select>
-            <select className="input">
-              <option>Select Color</option>
-            </select>
-
-            <input placeholder="Weight (KG)" className="input" />
-            <input placeholder="Length (CM)" className="input" />
-            <input placeholder="Width (CM)" className="input md:col-span-2" />
-
-            <textarea
-              placeholder="Description"
-              className="input md:col-span-2 h-32"
-            />
-          </div>
-        </div>
-
-        {/* Section: Pricing */}
-        <div className="bg-white rounded-2xl shadow p-6">
-          <h2 className="text-lg font-semibold mb-4">Pricing & Availability</h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <input placeholder="Weight (KG)" className="input" />
-            <input placeholder="Length (CM)" className="input" />
-            <input placeholder="Width (CM)" className="input" />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-
-            {/* Quantity */}
-            <div className="flex items-center border rounded-xl overflow-hidden">
-              <button
-                //onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                className="px-4 py-2 bg-gray-100"
-              >
-                -
-              </button>
-              {/* <div className="flex-1 text-center">{quantity}</div> */}
-              <button
-                //onClick={() => setQuantity(quantity + 1)}
-                className="px-4 py-2 bg-gray-100"
-              >
-                +
-              </button>
+          {/* <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
+            <div className="md:col-span-1">
+              <Input placeholder="Code" />
             </div>
 
-            <select className="input">
-              <option>Select Availability</option>
-            </select>
-          </div>
-        </div>
+            <div className="md:col-span-3">
+              <Input placeholder="Name" />
+            </div>
+          </div> */}
+            {/* <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div className="md:col-span-1">
+                <Input placeholder="Code" />
+              </div>
 
+              <div className="md:col-span-3">
+                <Input placeholder="Name" />
+              </div>
+            </div> */}
+             
+
+            <InputCombo codePlaceholder="Code" descPlaceholder="Name" />
+            <Input placeholder="Other Description" /> 
+            <select className="border rounded-xl px-4 py-2 w-full outline-none focus:ring-2 focus:ring-blue-500">
+              <option>Parent Menu</option>
+              <option>Menu 1</option>
+              <option>Menu 2</option>
+            </select> 
+              <TextArea
+                placeholder="Additional Information (less than 100 characters)"
+                className="md:col-span-4 h-32"
+              /> 
+             <div className="p-2 rounded-2xl">
+              <h2 className="font-bold mb-4">Radio</h2>
+              <Radio name="r" label="Active" />
+              <Radio name="r" label="Inactive" />
+            </div>
+            {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4"> 
+            <Input placeholder="Code"  className="input md:col-span-14" />  
+            <Input placeholder="Name" className="input md:col-span-3" />
+            <Input placeholder="Length (CM)" className="input md:col-span-12" />
+            <Input placeholder="Width (CM)" className="input md:col-span-4" />
+            <div className="bg-white p-6 rounded-2xl shadow">
+              <h2 className="font-bold mb-4">Radio</h2>
+              <Radio name="r" label="Default" />
+              <Radio name="r" label="Selected" />
+            </div>
+            <TextArea placeholder="Description" className="input md:col-span-4 h-32" />
+          </div> */}
+        </div>
+ 
+        
         
 
         {/* Buttons */}
         <div className="flex justify-end gap-3">
-          <button className="px-5 py-2 rounded-xl border">Draft</button>
+          <button className="px-5 py-2 rounded-xl border">Clear</button>
           <button className="px-5 py-2 rounded-xl bg-blue-600 text-white">
-            Publish Product
+            Publish Menu
           </button>
         </div>
       </div> 

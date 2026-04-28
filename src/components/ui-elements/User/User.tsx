@@ -24,14 +24,15 @@ export const User = () => {
   const ms = new Date().getUTCMilliseconds();
 
   const items = [
+    // {
+    //   title: "FormFrom Elements",
+    //   icon: <IdentificationIcon />,
+    //   color: "bg-indigo-300 dark:bg-indigo-800",
+    //   link: "/FromElements",
+    //   //onclick: () => {},
+    // }
+    // ,
     {
-      title: "FormFrom Elements",
-      icon: <IdentificationIcon />,
-      color: "bg-indigo-300 dark:bg-indigo-800",
-      link: "/FromElements",
-      //onclick: () => {},
-    }
-    ,{
       title: "Menus Settings",
       icon: <IdentificationIcon />,
       color: "bg-indigo-300 dark:bg-indigo-800",

@@ -1,5 +1,8 @@
 {
   "compilerOptions": {
+    "types": [
+      "vite/client"
+    ],
     "noImplicitAny": false,
     "target": "ESNext",
     "lib": [

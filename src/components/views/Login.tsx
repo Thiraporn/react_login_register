@@ -10,9 +10,8 @@ const LOGIN_URL = '/authen';
 export const Login = () => {
     const { setAuth } = useAuth();
     const navigate = useNavigate();
-    const location = useLocation();
-    const from = (location.state as any)?.from?.pathname || "/home";
-    
+    const location = useLocation(); 
+    const from = [(location.state as any)?.from?.pathname, sessionStorage.getItem("lastPath")].find((p) => p && p !== "/login") || "/home";
 
     const emailLoginRef = useRef<HTMLInputElement | null>(null);
     const pwdRef = useRef<HTMLInputElement | null>(null);

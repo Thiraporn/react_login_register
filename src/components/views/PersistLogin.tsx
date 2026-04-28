@@ -9,7 +9,7 @@ export const PersistLogin = () => {
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true);
     const refresh = useRefreshToken();
-    const { auth  } = useAuth();
+    const { auth, setAuth } = useAuth(); 
     const [persist] = useLocalStorage('persist',false)
     // refresh จะเกิด 2 กรณีหลัก:
     //1) ตอนเข้าเว็บ (PersistLogin)
@@ -19,10 +19,12 @@ export const PersistLogin = () => {
         let isMounted = true;
         const verifyRefreshToken = async () => {
             try {
-                await refresh();
+                const accessToken = await refresh();
+                console.log("ACCESS TOKEN after refresh:", accessToken);
 
             } catch (error: any) {
                 console.log(error); 
+                console.log("No valid session");
                 // console.log(" ERROR INTERCEPTED:", error?.response?.status);
                 // const status = error?.response?.status;
                 // const message = error?.response?.data?.message;
@@ -31,8 +33,21 @@ export const PersistLogin = () => {
                  
                 if (error?.response?.status === 401 ||
                     error?.response?.status === 403) {
-                     navigate("/login", { replace: true });
+                     navigate("/Unauthorized", { replace: true });
                 }
+                // if (error?.response?.status === 500) {
+                //     // Handle 500 Internal Server Error
+                //     console.error("Internal Server Error:", error?.response?.data);
+                //     //alert("An unexpected error occurred. Please try again later.");
+                //     navigate("/Page500", { replace: true });
+                // }
+                // if (error?.response?.status === 404) {
+                //     // Handle 404 Not Found
+                //     console.error("Resource Not Found:", error?.response?.data);
+                //     //alert("The requested resource was not found.");
+                //     navigate("/Page404", { replace: true });
+                // }
+
                 //return Promise.reject(error);
             } finally {
                isMounted && setIsLoading(false);

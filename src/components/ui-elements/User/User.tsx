@@ -33,21 +33,27 @@ export const User = () => {
     // }
     // ,
     {
-      title: "Menus Settings",
+      title: "Menus Management",
       icon: <IdentificationIcon />,
       color: "bg-indigo-300 dark:bg-indigo-800",
-      link: "/MenusSettings",
+      link: "/ManageMenus",
       //onclick: () => {},
     }
     , {
-      title: "New Users",
+      title: "Users Management",
       icon: <IdentificationIcon />,
       color: "bg-indigo-300 dark:bg-indigo-800",
-      link: "/Unauthorized",
+      link: "/ManageUsers",
       //onclick: () => {},
+    },{
+      title: "Roles Settings",
+      icon: <AdjustmentsVerticalIcon />,
+      color: "bg-fuchsia-300 dark:bg-fuchsia-800",
+      link: "/settings",
+      //onclick: () => { },
     }
     , {
-      title: "New Roles",
+      title: "Profile",
       icon: <IdentificationIcon />,
       color: "bg-indigo-300 dark:bg-indigo-800",
       link: "/profile",
@@ -59,13 +65,7 @@ export const User = () => {
     //   color: "bg-teal-300 dark:bg-teal-800",
     //   onclick: () => onChangeThemeClick(),
     // },
-    {
-      title: "Roles Settings",
-      icon: <AdjustmentsVerticalIcon />,
-      color: "bg-fuchsia-300 dark:bg-fuchsia-800",
-      link: "/settings",
-      //onclick: () => { },
-    },
+    
     {
       title: "Logout",
       icon: <ExclamationCircleIcon />,

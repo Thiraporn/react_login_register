@@ -5,9 +5,12 @@ const useRefreshToken = () => {
     const { setAuth } = useAuth();
     
     const refresh = async () => {
-        const response = await axiosPrivate.post('/refreshToken', {//ยิงไป backend /refreshToken
-            withCredentials: true
-        });
+        const response = await axiosPrivate.post('/refreshToken', 
+             {},// body (ต้องมี)
+             {//ยิงไป backend /refreshToken
+               withCredentials: true
+             }
+        );
         setAuth( prev =>{//backend ใช้ refreshToken (ใน cookie) --->  accessToken ใหม่ && roles ใหม่
             console.log(JSON.stringify(prev));
             console.log(response.data.accessToken);

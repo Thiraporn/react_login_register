@@ -18,6 +18,8 @@ const useLogout = () => {
                 user: null,
                 accessToken: null,
             });
+            //Clear auth data from sessionStorage
+            sessionStorage.clear();
         }
     }
 

@@ -2,7 +2,7 @@ import { axiosPrivate } from  '@/api/axios';
 import { useEffect } from "react";
 import useRefreshToken from '@/hooks/useRefreshToken';
 import useAuth from '@/hooks/useAuth'; 
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router'; 
 
 //useAxiosPrivate (ตัว “กัน token หมดอายุ”)
 const useAxiosPrivate = () => {
@@ -10,7 +10,6 @@ const useAxiosPrivate = () => {
     const refresh = useRefreshToken();
     //const auth = useAuth();
     const { auth } = useAuth();
-   
     useEffect(() => {
         // ======================
         // REQUEST: ใส่ token ทุกหน้า
@@ -43,8 +42,8 @@ const useAxiosPrivate = () => {
                 // TOKEN EXPIRED → refresh + retry
                 // =========================
                 // 🟡 CASE : token หมดอายุ
-                // =========================
-                if (status === 401 &&  !prevRequest.sent) {
+                // ========================= 
+                if ((status === 401 || status === 403)   &&  !prevRequest.sent) { 
                 //if (status === 403 && !prevRequest?.sent) {//Response interceptor ===> ยิง API แล้ว server ตอบ 403 (token expired / invalid)
                     //    ถ้า API ตอบกลับ 403 (token ใช้ไม่ได้แล้ว)
                     //    จะเรียก refresh()
@@ -54,7 +53,14 @@ const useAxiosPrivate = () => {
                         const newAccessToken = await refresh();
                         prevRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
                         return axiosPrivate(prevRequest);
-                 } catch (err) {
+                 } catch (err: any) {
+                        console.log("REFRESH FAIL:", err?.response?.status);
+                        console.log("REFRESH DATA:", err?.response?.data);
+                        //sessionStorage.setItem("lastPath", window.location.pathname);
+                        // เก็บ path เฉพาะตอนที่ไม่ใช่ login
+                        if (window.location.pathname !== "/login") {
+                            sessionStorage.setItem("lastPath", window.location.pathname);
+                        }
                         navigate("/login");
                         return Promise.reject(err);
                     }

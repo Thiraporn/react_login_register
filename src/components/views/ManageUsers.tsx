@@ -77,8 +77,8 @@ export const ManageUsers = () => {
               /> 
              <div className="p-2 rounded-2xl">
                 <h2 className="font-bold mb-6">Status</h2>
-                <Radio name="status" label="Active" />
-                <Radio name="status" label="Inactive" />
+                <Radio name="status" label="Active" value="active"  />
+                <Radio name="status" label="Inactive" value="inactive"  />
               </div>
            
         </div>

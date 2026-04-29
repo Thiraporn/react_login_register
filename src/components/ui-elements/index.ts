@@ -5,3 +5,4 @@ export * from "./MenuResponsive";
 export * from "./User";
 export * from "./PageHeader";
 export * from "./FormElements";
+export * from "./Modal";

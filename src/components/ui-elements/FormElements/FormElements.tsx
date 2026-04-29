@@ -6,13 +6,18 @@
   type?: React.HTMLInputTypeAttribute;//   optional
   placeholder?: string; //   optional
   className?: string; //   optional
+  value?: string; //   optional 
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
-export const Input = ({ label, type = "text", placeholder }: InputProps) => (
+export const Input = ({ label, type = "text", placeholder,name, value, onChange }: InputProps) => (
   <div className="mb-4">
     <label className="block text-sm font-medium mb-1">{label}</label>
     <input
       type={type}
       placeholder={placeholder}
+      name={name}
+      value={value} 
+      onChange={onChange}
       className="border rounded-xl px-4 py-2 w-full outline-none focus:ring-2 focus:ring-blue-500"
     />
   </div>
@@ -21,22 +26,49 @@ export const InputCombo = ({
   type = "text",
   codePlaceholder,
   descPlaceholder,
+  namecode,
+  namedesc,
+  valuecode,
+  valuedesc,
+  onChangeCode,
+  onChangeDesc,
+  disabled
 }: {
   type?: string;
   codePlaceholder?: string;
   descPlaceholder?: string;
+  namecode?: string;
+  namedesc?: string;
+  valuecode?: string;
+  valuedesc?: string; 
+  onChangeCode?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangeDesc?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  disabled?: boolean;
+  className?: string;
+  
 }) => ( 
   <div className="mb-4 grid grid-cols-1 md:grid-cols-12 gap-4">
     <input
       type={type}
       placeholder={codePlaceholder}
-      className="border rounded-xl px-4 py-2 w-full md:col-span-3"
+      name={namecode}
+      value={valuecode} 
+      onChange={onChangeCode}
+      className={`border rounded-xl px-4 py-2 w-full md:col-span-3 ${
+        disabled ? "bg-gray-100 cursor-not-allowed" : ""
+      }`}
+      disabled={disabled}   
     />
 
     <input
       type={type}
       placeholder={descPlaceholder}
+      name={namedesc}
+      value={valuedesc} 
+      onChange={onChangeDesc}
       className="border rounded-xl px-4 py-2 w-full md:col-span-9"
+      
+     
     />
   </div>
 );
@@ -56,9 +88,15 @@ export const Checkbox = ({ label }) => (
   </label>
 );
 
-export const Radio = ({ label, name }: InputProps) => (
+export const Radio = ({ label, name, value, checked, onChange }: {
+  label: string;
+  name: string;
+  value: string;
+  checked?: boolean;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}) => (
   <label className="flex items-center gap-2">
-    <input type="radio" name={name} /> {label}
+    <input type="radio" name={name} value={value} checked={checked} onChange={onChange} /> {label}
   </label>
 );
 

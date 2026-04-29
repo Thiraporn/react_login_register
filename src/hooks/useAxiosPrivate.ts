@@ -58,7 +58,7 @@ const useAxiosPrivate = () => {
                         console.log("REFRESH DATA:", err?.response?.data);
                         //sessionStorage.setItem("lastPath", window.location.pathname);
                         // เก็บ path เฉพาะตอนที่ไม่ใช่ login
-                        if (window.location.pathname !== "/login") {
+                        if (window.location.pathname !== "/login" && window.location.pathname !== "/Unauthorized") {
                             sessionStorage.setItem("lastPath", window.location.pathname);
                         }
                         navigate("/login");

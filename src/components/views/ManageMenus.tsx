@@ -150,7 +150,10 @@ export const ManageMenus = () => {
               <Input name="nameEN" placeholder="English Description"  value={form.nameEN}  onChange={(e) => setForm({ ...form, nameEN: e.target.value })}/> 
               <Input name="nameJP" placeholder="Japanese Description"  value={form.nameJP}  onChange={(e) => setForm({ ...form, nameJP: e.target.value })}/> 
               <Input name="url" placeholder="URL"  value={form.url}  onChange={(e) => setForm({ ...form, url: e.target.value })}/> 
-              <select name="menuParent"  className="border rounded-xl px-4 py-2 w-full outline-none focus:ring-2 focus:ring-blue-500">
+              <select name="menuParent"  className="border rounded-xl px-4 py-2 w-full outline-none focus:ring-2 focus:ring-blue-500"
+                     value={form.menuParent}
+                     onChange={(e) => setForm({ ...form, menuParent: e.target.value })
+                }>
                 <option value="00">Parent Menu</option>
                 <option value="01">Menu 1</option>
                 <option value="02">Menu 2</option>

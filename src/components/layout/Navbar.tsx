@@ -35,7 +35,7 @@ export const Navbar = () => {
               <MenuLinks menuLinks={navigationLinks} />
             </div>
           </div>
-          <div className="absolute block transform -translate-x-1/2 md:hidden left-1/2">
+          <div className="absolute z-50 block transform -translate-x-1/2 md:hidden left-1/2">
             <Logo />
           </div>
           <div className="flex items-center justify-center gap-4"> 

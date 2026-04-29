@@ -12,7 +12,7 @@ export const Profile = () => {
         const controller = new AbortController();
         const getUsers = async () => {
             try {
-                const response = await axiosPrivate.post('/users', {
+                const response = await axiosPrivate.post('/users/all-users', {
                     signal: controller.signal
                 });
                 const userNames = response.data.map(user => user.username);

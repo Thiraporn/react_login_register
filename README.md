@@ -24,6 +24,7 @@ The goal of this project is to practice building clean UI, handling form validat
 4. Vite 
 5. heroicons/react
 6. deploy react UI on netlify  
+7. icon lucide-react  
 
 
 ## Install 

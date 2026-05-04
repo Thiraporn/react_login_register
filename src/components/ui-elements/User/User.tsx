@@ -46,10 +46,10 @@ export const User = () => {
       link: "/ManageUsers",
       //onclick: () => {},
     },{
-      title: "Roles Settings",
+      title: "Permissions",
       icon: <AdjustmentsVerticalIcon />,
       color: "bg-fuchsia-300 dark:bg-fuchsia-800",
-      link: "/settings",
+      link: "/ManagePermissions",
       //onclick: () => { },
     }
     , {

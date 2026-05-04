@@ -9,4 +9,5 @@ export * from "./Unauthorized";
 export * from "./PersistLogin";
 export * from "./ManageMenus";
 export * from "./FromElements";
-export * from "./ManageUsers"; 
+export * from "./ManageUsers";  
+export * from "./ManagePermissions";

@@ -243,3 +243,27 @@ export const Toggle = () => (
     <span>Toggle</span>
   </div>
 ); 
+
+export const ToggleSwitch = ({
+    value,
+    onChange,
+  }: {
+    value: boolean;
+    onChange: () => void;
+  }) => {
+    return (
+      <button
+        type="button"
+        onClick={onChange}
+        className={`w-11 h-6 flex items-center rounded-full p-1 transition
+          ${value ? "bg-teal-600" : "bg-gray-300"}
+        `}
+      >
+        <div
+          className={`bg-white w-4 h-4 rounded-full shadow transform transition
+            ${value ? "translate-x-5" : ""}
+          `}
+        />
+      </button>
+    );
+  };

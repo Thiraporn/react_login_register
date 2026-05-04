@@ -1,8 +1,8 @@
 import { Routes, Route } from "react-router-dom";
 import { Container } from "@/components/layout";
-import { Home, AuthenticationForm, Page404, Page500, Profile, Unauthorized,PersistLogin ,FromElements, ManageMenus, ManageUsers} from "@/components/views";
+import { Home, AuthenticationForm, Page404, Page500, Profile, Unauthorized,PersistLogin ,FromElements, ManageMenus, ManageUsers,ManagePermissions} from "@/components/views";
 import NormalizePath from "@/context/NormalizePath";      
-import ModalProvider from "./context/ModalProvider";
+import ModalProvider from "./context/ModalProvider"; 
 function App() {  
   return (
     <> 
@@ -25,6 +25,7 @@ function App() {
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/ManageMenus" element={<ManageMenus />} />
                 <Route path="/ManageUsers" element={<ManageUsers />} />
+                <Route path="/ManagePermissions" element={<ManagePermissions />} />
                 <Route path="/FromElements" element={<FromElements />} /> 
               </Route>
             </Route>

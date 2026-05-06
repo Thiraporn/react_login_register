@@ -15,6 +15,11 @@ import { CheckCircle, AlertCircle ,Info} from "lucide-react";
   onBlur?: (e: React.ChangeEvent<HTMLInputElement>) => void;//   optional
   required?: boolean; //   optional
 };
+type SuggestionItem = {
+  code: string;
+  nameTH: string;
+  nameEN?: string;
+};
 export const Input = ({ label, type = "text", placeholder,name, value, onChange, onFocus, onBlur,required }: InputProps) => {
   return ( 
   <div className="mb-4">
@@ -125,7 +130,9 @@ export const InputCombo = ({
   valuedesc,
   onChangeCode,
   onChangeDesc,
-  disabled
+  disabled,
+  suggestions = [],
+  onSelect,
 }: {
   type?: string;
   codePlaceholder?: string;
@@ -138,9 +145,12 @@ export const InputCombo = ({
   onChangeDesc?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   disabled?: boolean;
   className?: string;
+  suggestions?: SuggestionItem[];
+
+  onSelect?: (item: SuggestionItem) => void;
   
 }) => ( 
-  <div className="mb-4 grid grid-cols-1 md:grid-cols-12 gap-4">
+  <div className="mb-4 grid grid-cols-1 md:grid-cols-12 gap-4 relative">
     <input
       type={type}
       placeholder={codePlaceholder}
@@ -163,6 +173,27 @@ export const InputCombo = ({
       
      
     />
+
+     {/* DROPDOWN */}
+    {suggestions.length > 0 && (
+        <div className="absolute left-0 right-0 top-full bg-white border rounded-xl mt-1 max-h-60 overflow-y-auto shadow">
+
+
+        {suggestions.map((item) => (
+          <div
+            key={item.code}
+            onClick={() => onSelect?.(item)}
+            className="p-2 hover:bg-gray-100 cursor-pointer"
+          >
+            <div className="font-medium">{item.code}</div>
+            <div className="text-xs text-gray-500">
+              {item.nameTH}
+            </div>
+          </div>
+        ))}
+
+      </div>
+    )}
   </div>
 );
  
@@ -266,4 +297,38 @@ export const ToggleSwitch = ({
         />
       </button>
     );
-  };
+  }; 
+export const TooltipButton = ({
+  icon: Icon,
+  label,
+  onClick,
+  className = "",
+  disabled = false,
+}: {
+  icon: any;
+  label: string;
+  onClick?: () => void;
+  className?: string;
+  disabled?: boolean;
+}) => {
+  return (
+    <div className="relative group inline-flex">
+      <button
+        onClick={onClick}
+        disabled={disabled}
+        className={`p-1 rounded hover:bg-gray-100 disabled:opacity-50 ${className}`}
+      >
+        <Icon size={18} />
+      </button>
+
+      <span
+        className="absolute -top-8 left-1/2 -translate-x-1/2
+                   bg-black text-white text-xs px-2 py-1 rounded
+                   opacity-0 group-hover:opacity-100
+                   whitespace-nowrap pointer-events-none"
+      >
+        {label}
+      </span>
+    </div>
+  );
+};

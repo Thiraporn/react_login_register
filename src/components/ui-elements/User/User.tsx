@@ -1,91 +1,106 @@
+import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import useLogout from "@/hooks/useLogout";
-import {
-  IdentificationIcon,
-  SunIcon,
-  MoonIcon,
-  AdjustmentsVerticalIcon,
-  ExclamationCircleIcon,
-} from "@heroicons/react/24/outline";
+import { JSX, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-// import { useState } from "react";
+import { ICON_MAP } from "@/components/IconPicker/iconRegistry";
+import { LogOut, Info } from "lucide-react";
+import useAuth from "@/hooks/useAuth";
 
+type Item = {
+  title: string;
+  icon: JSX.Element;
+  color: string;
+  link?: string;
+  onclick?: () => void;
+};
 export const User = () => {
+  //  axios instance refor auth + baseURL
+  const axiosPrivate = useAxiosPrivate();
+
   const navigate = useNavigate();
   const logout = useLogout();
+  const { auth } = useAuth();
 
   const signOut = async () => {
     //if use more components, this should be in context
     //axios to => logout endpoint
     await logout();
-    navigate('/login');
-  }
-  // const [theme, setTheme] = useState(localStorage.getItem("theme"));
+    navigate("/login");
+  };
 
   const ms = new Date().getUTCMilliseconds();
 
-  const items = [
-    // {
-    //   title: "FormFrom Elements",
-    //   icon: <IdentificationIcon />,
-    //   color: "bg-indigo-300 dark:bg-indigo-800",
-    //   link: "/FromElements",
-    //   //onclick: () => {},
-    // }
-    // ,
-    {
-      title: "Menus Management",
-      icon: <IdentificationIcon />,
-      color: "bg-indigo-300 dark:bg-indigo-800",
-      link: "/ManageMenus",
-      //onclick: () => {},
-    }
-    , {
-      title: "Users Management",
-      icon: <IdentificationIcon />,
-      color: "bg-indigo-300 dark:bg-indigo-800",
-      link: "/ManageUsers",
-      //onclick: () => {},
-    },{
-      title: "Permissions",
-      icon: <AdjustmentsVerticalIcon />,
-      color: "bg-fuchsia-300 dark:bg-fuchsia-800",
-      link: "/ManagePermissions",
-      //onclick: () => { },
-    }
-    , {
-      title: "Profile",
-      icon: <IdentificationIcon />,
-      color: "bg-indigo-300 dark:bg-indigo-800",
-      link: "/profile",
-      //onclick: () => {},
-    },
-    // {
-    //   title: theme === "light" ? "Dark theme" : "Light theme",
-    //   icon: theme === "light" ? <MoonIcon /> : <SunIcon />,
-    //   color: "bg-teal-300 dark:bg-teal-800",
-    //   onclick: () => onChangeThemeClick(),
-    // },
-    
-    {
-      title: "Logout",
-      icon: <ExclamationCircleIcon />,
-      color: "bg-red-300 dark:bg-red-800",
-      onclick: signOut 
-    },
+  // const [theme, setTheme] = useState(localStorage.getItem("theme"));
+  // // const onChangeThemeClick = () => {
+  // //   const newTheme = theme === "light" ? "dark" : "light";
+  // //   setTheme(newTheme);
+
+  // //   if (newTheme === "dark") {
+  // //     document.documentElement.classList.remove("light");
+  // //     document.documentElement.classList.add("dark");
+  // //   } else {
+  // //     document.documentElement.classList.remove("dark");
+  // //     document.documentElement.classList.add("light");
+  // //   }
+  // // };
+
+  const systemLogoutItem: Item = {
+    title: "Logout",
+    icon: <LogOut />,
+    color: "bg-red-300 dark:bg-red-800",
+    onclick: signOut,
+  };
+  const COLORS = [
+    "bg-indigo-300 dark:bg-indigo-800",
+    "bg-fuchsia-300 dark:bg-fuchsia-800",
+    "bg-teal-300 dark:bg-teal-800",
+    "bg-amber-300 dark:bg-amber-800",
   ];
 
-  // const onChangeThemeClick = () => {
-  //   const newTheme = theme === "light" ? "dark" : "light";
-  //   setTheme(newTheme);
+  const getColor = (menu) => {
+    if (menu || menu) {
+      return `bg-indigo-300 ${(menu || menu).trim()}`;
+    }
+    return COLORS[Math.floor(Math.random() * COLORS.length)];
+  };
 
-  //   if (newTheme === "dark") {
-  //     document.documentElement.classList.remove("light");
-  //     document.documentElement.classList.add("dark");
-  //   } else {
-  //     document.documentElement.classList.remove("dark");
-  //     document.documentElement.classList.add("light");
-  //   }
-  // };
+  const getIcon = (key) => {
+    const Icon = ICON_MAP[key] || Info;
+    return <Icon />;
+  };
+  const [items, setItems] = useState<Item[]>([]);
+
+  const mapMenusToItems = (menus) => {
+    if (!Array.isArray(menus) || menus.length === 0) return [];
+
+    const children = menus[0]?.children ?? [];
+
+    return children.map((menu) => ({
+      title: menu.nameEN,
+      icon: getIcon(menu.icon),
+      color: getColor(menu.color),
+      link: menu.url,
+    }));
+  };
+
+  useEffect(() => {
+    const fetchMenus = async () => {
+      try {
+        const res = await axiosPrivate.get("/permissions/get-permissions");
+
+        console.log("API >>>", res.data);
+
+        const mapped = mapMenusToItems(res.data);
+        console.log("mapped >>>", mapped);
+
+        setItems([...(Array.isArray(mapped) ? mapped : []), systemLogoutItem]);
+      } catch (err) {
+        console.error("fetchMenus error >>>", err);
+      }
+    };
+
+    fetchMenus();
+  }, []);
 
   return (
     <div className="relative group">
@@ -94,35 +109,35 @@ export const User = () => {
           src={`https://api.dicebear.com/5.x/bottts-neutral/svg?seed=${ms}`}
           className="my-auto ml-3 rounded-full w-7 h-7"
         />
-        <p className="mr-3 font-bold text-gray-800 dark:text-gray-200">ADMIN</p>
+        <p className="mr-3 font-bold text-gray-800 dark:text-gray-200">
+          {auth?.user ? auth.user.toUpperCase() : "GUEST"}
+        </p>
       </div>
       <ul className="absolute z-50 w-72 p-2 bg-slate-50 dark:bg-gray-900 shadow-[rgba(0,_0,_0,_0.24)_0px_0px_40px] shadow-slate-400 dark:shadow-slate-700 hidden md:group-hover:flex flex-col -left-[8em] rounded-xl ">
         {items.map((item) => (
-
           <li
             key={item.title}
             className="flex items-center justify-start h-16 font-bold cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-800 rounded-xl"
             //onClick={item.onclick}
-          >  
-          {item.link ? ( 
-             <Link
-              to={item.link}
-              className="flex items-center justify-start h-16 font-bold 
+          >
+            {item.link ? (
+              <Link
+                to={item.link}
+                className="flex items-center justify-start h-16 font-bold 
                  hover:bg-slate-200 dark:hover:bg-slate-800 
                  rounded-xl w-full"
-            >
-              <div
-                className={`h-10 w-10 ml-5 flex items-center justify-center rounded-lg ${item.color}`}
               >
-                <div className="w-3/5 text-gray-800 h-3/5 dark:text-gray-200">
-                  {item.icon}
+                <div
+                  className={`h-10 w-10 ml-5 flex items-center justify-center rounded-lg ${item.color}`}
+                >
+                  <div className="w-3/5 text-gray-800 h-3/5 dark:text-gray-200">
+                    {item.icon}
+                  </div>
                 </div>
-              </div>
-              <p className="ml-5 text-gray-600 dark:text-gray-200">
-                {item.title}
-              </p>
-
-            </Link>
+                <p className="ml-5 text-gray-600 dark:text-gray-200">
+                  {item.title}
+                </p>
+              </Link>
             ) : (
               <button
                 onClick={item.onclick}
@@ -140,7 +155,6 @@ export const User = () => {
               </button>
             )}
           </li>
-
         ))}
       </ul>
     </div>

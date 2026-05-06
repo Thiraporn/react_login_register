@@ -87,7 +87,7 @@ export const User = () => {
       try {
         //const res = await axiosPrivate.get("/permissions/get-permissions");
         const [permissions, currentMe] = await Promise.all([
-          axiosPrivate.get("/permissions/get-permissions"),
+          axiosPrivate.get("/permissions/get-permissions-management"),
           axiosPrivate.get("/user/me"),
         ]);
 

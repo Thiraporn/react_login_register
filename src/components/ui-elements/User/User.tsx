@@ -4,7 +4,7 @@ import { JSX, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ICON_MAP } from "@/components/IconPicker/iconRegistry";
 import { LogOut, Info } from "lucide-react";
-import useAuth from "@/hooks/useAuth";
+import { useAuth } from "@/hooks";
 
 type Item = {
   title: string;
@@ -16,10 +16,9 @@ type Item = {
 export const User = () => {
   //  axios instance refor auth + baseURL
   const axiosPrivate = useAxiosPrivate();
-
+  const { auth, setAuth } = useAuth();
   const navigate = useNavigate();
   const logout = useLogout();
-  const { auth } = useAuth();
 
   const signOut = async () => {
     //if use more components, this should be in context
@@ -86,11 +85,22 @@ export const User = () => {
   useEffect(() => {
     const fetchMenus = async () => {
       try {
-        const res = await axiosPrivate.get("/permissions/get-permissions");
+        //const res = await axiosPrivate.get("/permissions/get-permissions");
+        const [permissions, currentMe] = await Promise.all([
+          axiosPrivate.get("/permissions/get-permissions"),
+          axiosPrivate.get("/user/me"),
+        ]);
 
-        console.log("API >>>", res.data);
+        console.log("API >>>", permissions.data);
+        console.log("currentMe >>>", currentMe);
+        setAuth((prev) => {
+          return {
+            ...prev,
+            user: currentMe?.data?.username,
+          };
+        });
 
-        const mapped = mapMenusToItems(res.data);
+        const mapped = mapMenusToItems(permissions.data);
         console.log("mapped >>>", mapped);
 
         setItems([...(Array.isArray(mapped) ? mapped : []), systemLogoutItem]);
@@ -113,7 +123,18 @@ export const User = () => {
           {auth?.user ? auth.user.toUpperCase() : "GUEST"}
         </p>
       </div>
-      <ul className="absolute z-50 w-72 p-2 bg-slate-50 dark:bg-gray-900 shadow-[rgba(0,_0,_0,_0.24)_0px_0px_40px] shadow-slate-400 dark:shadow-slate-700 hidden md:group-hover:flex flex-col -left-[8em] rounded-xl ">
+      {/* <ul className="absolute z-50 w-72 p-2 bg-slate-50 dark:bg-gray-900 shadow-[rgba(0,_0,_0,_0.24)_0px_0px_40px] shadow-slate-400 dark:shadow-slate-700 hidden md:group-hover:flex flex-col -left-[8em] rounded-xl "> */}
+      <ul
+        className="  absolute z-50 w-72 p-2 bg-slate-50 dark:bg-gray-900
+    shadow-[rgba(0,_0,_0,_0.24)_0px_0px_40px]
+    shadow-slate-400 dark:shadow-slate-700
+    flex flex-col
+    left-[-8em] rounded-xl
+
+    opacity-0 invisible pointer-events-none
+    group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto
+    transition-all duration-200"
+      >
         {items.map((item) => (
           <li
             key={item.title}

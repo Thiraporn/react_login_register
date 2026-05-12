@@ -5,7 +5,7 @@ import {
   AuthenticationForm,
   Page404,
   Page500,
-  Profile,
+  Contact,
   Unauthorized,
   PersistLogin,
   FromElements,
@@ -15,6 +15,7 @@ import {
 } from "@/components/views";
 import NormalizePath from "@/context/NormalizePath";
 import ModalProvider from "@/context/ModalProvider";
+import ProtectedRoute from "@/context/ProtectedRoute";
 function App() {
   return (
     <>
@@ -31,16 +32,12 @@ function App() {
           <Route path="/Page500" element={<Page500 />} />
           <Route element={<Container />}>
             <Route element={<PersistLogin />}>
-              {/* <Route path="/" element={<Home />} /> */}
-              <Route path="/home" element={<Home />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/ManageMenus" element={<ManageMenus />} />
-              <Route path="/ManageUsers" element={<ManageUsers />} />
-              <Route
-                path="/ManagePermissions"
-                element={<ManagePermissions />}
-              />
-              <Route path="/FromElements" element={<FromElements />} />
+              <Route path="/Home" element={<Home />} />
+              <Route path="/Contact" element={<ProtectedRoute><Contact /></ProtectedRoute>} />
+              <Route path="/ManageMenus" element={<ProtectedRoute> <ManageMenus /> </ProtectedRoute>} />
+              <Route path="/ManageUsers" element={<ProtectedRoute><ManageUsers /></ProtectedRoute>} />
+              <Route path="/ManagePermissions" element={<ProtectedRoute><ManagePermissions /></ProtectedRoute>} />
+              {/* <Route path="/FromElements" element={<ProtectedRoute><FromElements /></ProtectedRoute>} /> */}
             </Route>
           </Route>
           <Route path="*" element={<Page404 />} />

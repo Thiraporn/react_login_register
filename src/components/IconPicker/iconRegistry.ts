@@ -1,5 +1,5 @@
-//import * as Icons from '@heroicons/react/24/solid';
 import * as Icons from "lucide-react";
+
 export const ICON_MAP = Icons; 
 export const ICON_KEYS = Object.keys(Icons);
 //กรองเอาเฉพาะที่เป็น component จริง
@@ -13,7 +13,5 @@ export const ICON_KEYS = Object.keys(Icons);
 // });
 
 console.log("ALL Icons :", Object.keys(Icons).length);
-console.log(Icons);
-
- 
-//export const ICON_KEYS = Object.keys(Icons);
+console.log(Icons); 
+  

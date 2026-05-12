@@ -2,10 +2,9 @@ import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import useLogout from "@/hooks/useLogout";
 import { JSX, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ICON_MAP } from "@/components/IconPicker/iconRegistry";
-import { LogOut, Info } from "lucide-react";
+import { LogOut } from "lucide-react";
 import { useAuth } from "@/hooks";
-
+import { getColor, getIcon } from "@/utils";
 type Item = {
   title: string;
   icon: JSX.Element;
@@ -14,11 +13,12 @@ type Item = {
   onclick?: () => void;
 };
 export const User = () => {
-  //  axios instance refor auth + baseURL
-  const axiosPrivate = useAxiosPrivate();
-  const { auth, setAuth } = useAuth();
+  const { auth } = useAuth();
   const navigate = useNavigate();
   const logout = useLogout();
+
+  const { menus } = useAuth();
+
 
   const signOut = async () => {
     //if use more components, this should be in context
@@ -49,68 +49,27 @@ export const User = () => {
     color: "bg-red-300 dark:bg-red-800",
     onclick: signOut,
   };
-  const COLORS = [
-    "bg-indigo-300 dark:bg-indigo-800",
-    "bg-fuchsia-300 dark:bg-fuchsia-800",
-    "bg-teal-300 dark:bg-teal-800",
-    "bg-amber-300 dark:bg-amber-800",
-  ];
-
-  const getColor = (menu) => {
-    if (menu || menu) {
-      return `bg-indigo-300 ${(menu || menu).trim()}`;
-    }
-    return COLORS[Math.floor(Math.random() * COLORS.length)];
-  };
-
-  const getIcon = (key) => {
-    const Icon = ICON_MAP[key] || Info;
-    return <Icon />;
-  };
   const [items, setItems] = useState<Item[]>([]);
 
   const mapMenusToItems = (menus) => {
-    if (!Array.isArray(menus) || menus.length === 0) return [];
+    if (!Array.isArray(menus)) return [];
 
-    const children = menus[0]?.children ?? [];
-
-    return children.map((menu) => ({
-      title: menu.nameEN,
-      icon: getIcon(menu.icon),
-      color: getColor(menu.color),
-      link: menu.url,
-    }));
+    return menus
+      .filter((group: any) => group?.groupCode === "MANAGEMENT")
+      .flatMap((group: any) => group.children ?? [])
+      .map((menu: any) => ({
+        title: menu.nameEN,
+        icon: getIcon(menu.icon),
+        color: getColor(menu.color),
+        link: menu.url,
+      }));
   };
 
   useEffect(() => {
-    const fetchMenus = async () => {
-      try {
-        //const res = await axiosPrivate.get("/permissions/get-permissions");
-        const [permissions, currentMe] = await Promise.all([
-          axiosPrivate.get("/permissions/get-permissions-management"),
-          axiosPrivate.get("/user/me"),
-        ]);
+    const mapped = mapMenusToItems(menus);
+    setItems([...(Array.isArray(mapped) ? mapped : []), systemLogoutItem]);
+  }, [menus]);
 
-        console.log("API >>>", permissions.data);
-        console.log("currentMe >>>", currentMe);
-        setAuth((prev) => {
-          return {
-            ...prev,
-            user: currentMe?.data?.username,
-          };
-        });
-
-        const mapped = mapMenusToItems(permissions.data);
-        console.log("mapped >>>", mapped);
-
-        setItems([...(Array.isArray(mapped) ? mapped : []), systemLogoutItem]);
-      } catch (err) {
-        console.error("fetchMenus error >>>", err);
-      }
-    };
-
-    fetchMenus();
-  }, []);
 
   return (
     <div className="relative group">
@@ -139,7 +98,7 @@ export const User = () => {
           <li
             key={item.title}
             className="flex items-center justify-start h-16 font-bold cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-800 rounded-xl"
-            //onClick={item.onclick}
+          //onClick={item.onclick}
           >
             {item.link ? (
               <Link

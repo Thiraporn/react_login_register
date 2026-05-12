@@ -1,17 +1,32 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import {
-   Logo
+  Logo
   , MenuLinks
-  , MenuResponsive 
+  , MenuResponsive
   , MobileMenu
   , User
 } from "../ui-elements";
-import { navigationLinks } from "./navigation-links";
-export const Navbar = () => {
+import { getColor, getIcon } from "@/utils";
+type Props = {
+  menus: any[];
+};
+//export const Navbar = () => {
+export const Navbar = ({ menus }: Props) => {
   const location = useLocation();
-
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const mappedMenus = menus.filter((group: any) => group.groupCode !== "MANAGEMENT").map((group: any) => ({
+    code: group.code,
+    name: group.nameEN,
+    subLinks: group.children?.map((child: any) => ({
+      code: child.code,
+      name: child.nameEN,
+      description: child.description,
+      link: child.url,
+      icon: getIcon(child.icon),
+      color: getColor(child.color),
+    })) || [],
+  }));
 
   useEffect(() => {
     setIsMobileMenuOpen(false);
@@ -32,18 +47,18 @@ export const Navbar = () => {
               <Logo />
             </div>
             <div className="relative hidden ml-4 text-gray-600 top-[1px] md:block">
-              <MenuLinks menuLinks={navigationLinks} />
+              <MenuLinks menuLinks={mappedMenus} />
             </div>
           </div>
           <div className="absolute z-50 block transform -translate-x-1/2 md:hidden left-1/2">
             <Logo />
           </div>
-          <div className="flex items-center justify-center gap-4"> 
+          <div className="flex items-center justify-center gap-4">
             <User />
-          </div>  
+          </div>
         </div>
         <div className="md:hidden">
-          {isMobileMenuOpen && <MobileMenu menuLinks={navigationLinks} />}
+          {isMobileMenuOpen && <MobileMenu menuLinks={mappedMenus} />}
         </div>
       </nav>
     </>

@@ -8,24 +8,24 @@ import { PersistLogin } from "./PersistLogin";
 const LOGIN_URL = '/authen';
 
 export const Login = () => {
-    const { setAuth } = useAuth();
+    const { setAuth, initializeAuthorized } = useAuth();
     const navigate = useNavigate();
-    const location = useLocation(); 
-    const from = [(location.state as any)?.from?.pathname, sessionStorage.getItem("lastPath")].find((p) => p && p !== "/login") || "/home";
+    const location = useLocation();
+    const from = [(location.state as any)?.from?.pathname, sessionStorage.getItem("lastPath")].find((p) => p && p !== "/login") || "/Home";
 
     const emailLoginRef = useRef<HTMLInputElement | null>(null);
     const pwdRef = useRef<HTMLInputElement | null>(null);
     const errRef = useRef<HTMLInputElement | null>(null);
-     
+
     //+++++++++++++++++++++++++ Login : START ++++++++++++++++++++++++++++++++++++
-    const [emailLogin, setEmailLogin, emailLoginAttributeObj] = useInput('emailLogin', ''); 
-    const [pwd,setPwd,pwdAttributeObj] = useInput('pwd','');
-        
+    const [emailLogin, setEmailLogin, emailLoginAttributeObj] = useInput('emailLogin', '');
+    const [pwd, setPwd, pwdAttributeObj] = useInput('pwd', '');
+
     //const [pwd, setPwd] = useState('');
     const [errMsg, setErrMsg] = useState('');
 
     //+++++++++++++++++++++++++ Login : END ++++++++++++++++++++++++++++++++++++++ 
-   const [persist, togglePersist] = useToggle('persist', false); 
+    const [persist, togglePersist] = useToggle('persist', false);
 
     useEffect(() => {
         emailLoginRef.current?.focus();
@@ -52,6 +52,8 @@ export const Login = () => {
             const accessToken = response?.data?.accessToken;
             //const roles = response?.data?.roles;
             setAuth({ user: emailLogin, accessToken });
+            //Menu ,Permission
+            await initializeAuthorized(accessToken);
             //clear input fields after login success (ถ้าไม่ clear → localStorage จะถูก “เขียนทับเป็นค่าว่าง” เพราะ useEffect ใน useLocalStorage จะทำงานทันที: localStorage.setItem("emailLogin", "") )
             // ค่าเดิมใน localStorage ถูก “เขียนทับเป็นค่าว่าง”
             // เหมือน localStorage หาย
@@ -92,7 +94,7 @@ export const Login = () => {
                 <input type="text" id="emailLogin"
                     placeholder="Email Address"
                     ref={emailLoginRef}
-                   {...emailLoginAttributeObj}
+                    {...emailLoginAttributeObj}
                     required />
             </div>
 
@@ -102,8 +104,8 @@ export const Login = () => {
                     id="password"
                     // onChange={(e) => setPwd(e.target.value)}
                     // value={pwd}
-                     ref={pwdRef}
-                   {...pwdAttributeObj}
+                    ref={pwdRef}
+                    {...pwdAttributeObj}
                     required />
             </div>
 
@@ -124,7 +126,7 @@ export const Login = () => {
                     <input type="checkbox" id="persist" onChange={togglePersist} checked={persist} />
                     <label htmlFor="persist">{" "}Trust This Device</label>
                 </div>
-            </div> 
+            </div>
             <div className="field btn">
                 <div className="btn-layer"></div>
                 <input type="submit" value="Login" />

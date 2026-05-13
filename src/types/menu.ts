@@ -20,3 +20,15 @@ export type MenuItem = {
   requiredPermissions?: string[];
 
 };
+
+export type Role = {
+  id: string;
+  code: string;
+  name: string; // USER, ADMIN
+};
+
+export type Permission = {
+  roleCode: string;
+  menuCode: string;
+  enabled: boolean
+};

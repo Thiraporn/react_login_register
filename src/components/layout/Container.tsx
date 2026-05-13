@@ -18,8 +18,12 @@ export const Container = () => {
 
   return (
     <>
-      <Navbar menus={menus} />
-      <Outlet />
+      <div className="flex flex-col min-h-screen">
+        <Navbar menus={menus} />
+        <main className="pt-16">
+          <Outlet />
+        </main>
+      </div>
     </>
   )
 }

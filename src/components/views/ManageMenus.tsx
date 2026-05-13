@@ -1,15 +1,20 @@
 import { useEffect, useState } from "react";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate"; //Custom Hook สำหรับเรียก API แบบ authenticated
-import { PageHeader, Input, Radio, TextArea, InputCombo, TooltipButton } from "@/components/ui-elements";//Custom UI Component
+import { PageHeader, Input, Radio, TextArea, InputCombo, TooltipButton, InputWithValidation } from "@/components/ui-elements";//Custom UI Component
 import { useModal } from "@/context/ModalProvider";//Custom Global Modal Context
 import { Plus, Save, Pencil, Trash2 } from "lucide-react";
 import { ICON_MAP, ICON_KEYS } from "@/components/IconPicker/iconRegistry"//ระบบเก็บ icon ทั้งหมด
+import { toPascalCaseUrl, toUpperCaseNoSpace } from "@/utils/commonUtils";
+import { AxiosResponse } from "axios";
 
 export const ManageMenus = () => {
+  //Control Mode
+  const [mode, setMode] = useState<"create" | "edit">("create");
   //  ใช้ context เพื่อ global modal  
   const { showModal, hideModal } = useModal();
   //  init form state + errors state
   const MenuForm = {
+    id: null,
     code: "",
     nameTH: "",
     nameEN: "",
@@ -22,6 +27,7 @@ export const ManageMenus = () => {
     status: "ACTIVE"
   };
   const SubMenuForm = {
+    id: null,
     code: "",
     nameTH: "",
     nameEN: "",
@@ -82,6 +88,7 @@ export const ManageMenus = () => {
 
   };
 
+
   useEffect(() => {
     if (isSelecting) return;//หยุดก่อน ถ้ากำลังเลือก autocomplete 
     if (!query) {//clear ทุกอย่าง ถ้า query ว่าง
@@ -96,15 +103,23 @@ export const ManageMenus = () => {
       return;
     }
 
+    const cleanup = handleSearch(query);
+    return cleanup;
+
+  }, [query]);
+
+  const handleSearch = (keyword: string) => {
+    setQuery(keyword);
     const timer = setTimeout(async () => {//Debounce Search กันยิง API ทุก keypress
-      const result = await fetchSuggestions(query);//Search
+      const result = await fetchSuggestions(keyword);//Search
+      setSuggestions(result);
 
       if (result && result.length > 0) {//เปิด submenu section เปิด submenu section และ load
         // เจอ code
         setIsSubMenuOpen(true);
 
         // (optional) ถ้าต้อง load submenu จาก API จริง 
-        loadSubMenus(result[0].code)
+        //loadSubMenus(result[0].code)
 
       } else {
         //  ไม่เจอ code
@@ -118,7 +133,58 @@ export const ManageMenus = () => {
     }, 300);
 
     return () => clearTimeout(timer);//Cleanup Timer กัน memory leak
-  }, [query]);
+  };
+
+  // const handleSearch = (keyword: string) => {
+  //   setQuery(keyword);
+
+  //   const timer = setTimeout(async () => {
+  //     const result = await fetchSuggestions(keyword);
+
+  //     setSuggestions(result);
+
+  //     if (!result || result.length === 0) {
+  //       setIsSubMenuOpen(false);
+  //       setSubMenus([]);
+  //       setForm(prev => ({ ...prev, code: "" }));
+  //     }
+  //   }, 300);
+
+  //   return () => clearTimeout(timer);
+  // };
+
+  const handleSelectMenu = async (item: any) => {
+    setIsSelecting(true);
+    // setForm({
+    //   ...form,
+    //   code: item.code ?? "",
+    //   nameTH: item.nameTH ?? "",
+    //   nameEN: item.nameEN ?? "",
+    //   nameJP: item.nameJP ?? "",
+    //   url: item.url ?? "",
+    //   info: item.info ?? "",
+    //   status: item.status ?? "ACTIVE"
+    // });
+
+    setForm(prev => ({
+      ...prev,
+      ...item
+    }));
+
+    setQuery(item.nameTH);//   sync UI
+    setSuggestions([]);
+    setMode("edit");
+
+    //   load table ONLY here
+    setIsSubMenuOpen(true);
+    await loadSubMenus(item.code);
+
+    setTimeout(() => {
+      setIsSelecting(false);
+    }, 0);
+  };
+
+
 
 
 
@@ -129,6 +195,7 @@ export const ManageMenus = () => {
       setForm({
         ...MenuForm,
       });
+      setMode('create');
 
     })();
   }, []);
@@ -136,9 +203,10 @@ export const ManageMenus = () => {
   // Validation function เช็ค field required
   const validate = () => {
     const newErrors: any = {};
-    if (!form.code) newErrors.code = "Code is required";
+    //if (!form.code) newErrors.code = "Code is required"; backend is provided
     if (!form.nameTH) newErrors.nameTH = "Thai name is required";
     if (!form.nameEN) newErrors.nameEN = "English name is required";
+    if (!form.groupCode) newErrors.groupCode = "English name is required";
     // if (!form.nameJP) newErrors.nameJP = "Japanese name is required";
     //if (form.code.length < 3) newErrors.code = "Code too short";
 
@@ -166,13 +234,33 @@ export const ManageMenus = () => {
 
     try {
       showModal("loading", "กำลังอัปเดต...");//show user loading modal
-      const res = await axiosPrivate.post(//ส่งข้อมูล form ไป backend
-        "/menus/save",
-        form,
-        { signal: controller.signal, withCredentials: true }
-      );
+      //Depend Control Mode
+      let res: AxiosResponse;
+      if (mode === "create") {
+        res = await axiosPrivate.post(//ส่งข้อมูล form ไป backend
+          "/menus/save", form,
+          { signal: controller.signal, withCredentials: true }
+        );
+      } else {
+        res = await axiosPrivate.put(//ส่งข้อมูล form ไป backend
+          `/menus/edit/${form.id}`, form,
+          { signal: controller.signal, withCredentials: true }
+        );
+      }
+
 
       console.log("Saved:", res.data);
+      // หลัง save success → Clear Form 
+      setForm(prev => ({
+        ...prev,
+        ...res.data
+      }));
+      //set mode
+      setMode("edit");
+
+      // reload table
+      handleSearch(res.data.nameTH);
+
       // alert("Save success"); 
       hideModal(); // ปิด loading ก่อน
       showModal("success", "บันทึกสำเร็จ");
@@ -180,10 +268,7 @@ export const ManageMenus = () => {
         hideModal();
       }, 1200);
 
-      // หลัง save success → Clear Form
-      setForm({
-        ...MenuForm,
-      });
+
 
     } catch (err: any) {
       hideModal();
@@ -201,7 +286,7 @@ export const ManageMenus = () => {
       ...SubMenuForm,
       //code: `C${Date.now()}`,
       menuParent: form.code,//ผูก parent menu
-      groupCode: form.nameEN?.toUpperCase() || "",//generate groupCode
+      groupCode: toUpperCaseNoSpace(form.nameEN) || "",//generate groupCode
       isSaved: false,//state frontend ยังไม่ save 
       isEditing: true,//state frontend กำลัง edit อยู่
       id: null
@@ -217,11 +302,21 @@ export const ManageMenus = () => {
     const payload = {//build payload
       ...row,
       menuParent: form.code,
-      groupCode: form.nameEN?.toUpperCase() || ""
+      nameTH: row.nameEN,
+      nameJP: row.nameEN,
+      groupCode: toUpperCaseNoSpace(form.nameEN) || ""
     };
 
     try {
-      const res = await axiosPrivate.post("/menus/submenu-save", payload);
+      //const res = await axiosPrivate.post("/menus/submenu-save", payload);
+      //Depend Control Mode
+      let res: AxiosResponse;
+
+      if (!row.isSaved) { // CREATE 
+        res = await axiosPrivate.post("/menus/submenu-save", payload);
+      } else { // UPDATE 
+        res = await axiosPrivate.put(`/menus/submenu-edit/${row.id}`, payload);
+      }
 
       const updated = [...subMenus];//update state
       updated[index] = {
@@ -272,7 +367,16 @@ export const ManageMenus = () => {
       )
     );
   };
-
+  //clear parent form
+  const handleClearParentMenuForm = () => {
+    setForm({ ...MenuForm });
+    setQuery("");//เพราะ InputCombo ใช้:valuedesc={query}
+    setSuggestions([]);//ล้าง autocomplete dropdown
+    setSubMenus([]);//ล้าง table submenu
+    setIsSubMenuOpen(false);//ซ่อน section submenu
+    setErrors({});//clear err
+    setMode("create");
+  };
 
   return (
 
@@ -302,29 +406,77 @@ export const ManageMenus = () => {
               valuedesc={query}
               //onChangeDesc={(e) => setForm({ ...form, nameTH: e.target.value })}  
               disabled={true}
-              onChangeDesc={(e) => setQuery(e.target.value)} //  hook search 
-              suggestions={suggestions}
-              onSelect={(item) => {
-                setIsSelecting(true);
-                setForm({
-                  ...form,
-                  code: item.code,
-                  nameTH: item.nameTH,
-                });
+              onChangeDesc={(e) => {
+                setQuery(e.target.value)  //  hook search 
+                setForm(prev => ({
+                  ...prev,
+                  nameTH: e.target.value
+                }))
 
-                setQuery(item.nameTH); //   sync UI
-                setSuggestions([]);
-
-                setTimeout(() => {
-                  setIsSelecting(false);
-                }, 0);
               }}
+
+              // onBlurDesc={() => {
+              //   setTimeout(() => {
+              //     setIsSelecting(false);
+
+              //     setForm(prev => ({
+              //       ...prev,
+              //       nameTH: query
+              //     }));
+              //   }, 150);
+              //   setSuggestions([]);
+              // }}
+              suggestions={suggestions}
+              onSelect={handleSelectMenu}
+            // onSelect={(item) => {
+            //   setIsSelecting(true);
+
+            //   // setForm({
+            //   //   ...form,
+            //   //   code: item.code ?? "",
+            //   //   nameTH: item.nameTH ?? "",
+            //   //   nameEN: item.nameEN ?? "",
+            //   //   nameJP: item.nameJP ?? "",
+            //   //   url: item.url ?? "",
+            //   //   info: item.info ?? "",
+            //   //   status: item.status ?? "ACTIVE"
+            //   // });
+            //   setForm(prev => ({
+            //     ...prev,
+            //     ...item
+            //   }));
+
+            //   setQuery(item.nameTH); //   sync UI
+            //   setSuggestions([]);
+
+            //   setMode('edit')
+
+            //   //(optional) ถ้าต้อง load submenu จาก API จริง
+            //   loadSubMenus(item.code)
+
+            //   setTimeout(() => {
+            //     setIsSelecting(false);
+            //   }, 0);
+            // }}
             />
 
 
-            <Input name="nameEN" placeholder="English Description" value={form.nameEN} onChange={(e) => setForm({ ...form, nameEN: e.target.value })} />
+            <InputWithValidation name="nameEN" placeholder="English Description" value={form.nameEN} onChange={(e) => setForm({ ...form, nameEN: e.target.value, groupCode: toUpperCaseNoSpace(e.target.value) || "" })} describedBy="pwdnote"
+              validator={(value) => value.trim() !== ""}
+              errorMessage={
+                <>
+                  English Description used for automatic Menu Group generation<br />
+                </>
+              }
+              required />
             <Input name="nameJP" placeholder="Japanese Description" value={form.nameJP} onChange={(e) => setForm({ ...form, nameJP: e.target.value })} />
-            <Input name="url" placeholder="URL" value={form.url} onChange={(e) => setForm({ ...form, url: e.target.value })} />
+            <Input name="url" placeholder="URL" value={form.url} onChange={(e) => setForm({ ...form, url: e.target.value })}
+              onBlur={(e) =>
+                setForm(prev => ({
+                  ...prev,
+                  url: toPascalCaseUrl(e.target.value)
+                }))
+              } />
             {/* <select name="menuParent"  className="border rounded-xl px-4 py-2 w-full outline-none focus:ring-2 focus:ring-blue-500"
                      value={form.menuParent}
                      onChange={(e) => setForm({ ...form, menuParent: e.target.value })
@@ -336,7 +488,15 @@ export const ManageMenus = () => {
             <TextArea
               placeholder="Additional Information (less than 100 characters)"
               className="md:col-span-4 h-32"
-              value={form.info} onChange={(e) => setForm({ ...form, info: e.target.value })}
+              value={form.info}
+              onChange={(e) => {
+                console.log("info:", e.target.value);
+
+                setForm(prev => ({
+                  ...prev,
+                  info: e.target.value
+                }));
+              }}
             />
             <div className="p-2 rounded-2xl">
               <h2 className="font-bold mb-6">Status</h2>
@@ -347,11 +507,11 @@ export const ManageMenus = () => {
           </div>
           {/* Buttons */}
           <div className="flex justify-end gap-3">
-            <button className="px-5 py-2 rounded-xl border" onClick={async () => { setForm({ ...MenuForm }); }}>
+            <button type="button" className="px-5 py-2 rounded-xl border" onClick={handleClearParentMenuForm}>
               Clear
             </button>
-            <button type="submit" className="px-5 py-2 rounded-xl bg-blue-600 text-white">
-              Publish Menu
+            <button type="submit" className="px-5 py-2 rounded-xl bg-blue-600 text-white"  >
+              {mode === "create" ? "Publish Menu" : "Update Menu"}
             </button>
           </div>
 
@@ -425,7 +585,7 @@ export const ManageMenus = () => {
                                 value={row.url || ""}
                                 className="w-full border rounded-lg px-2 py-1"
                                 onChange={(e) =>
-                                  handleChangeRow(index, e.target.name, e.target.value)
+                                  handleChangeRow(index, e.target.name, toPascalCaseUrl(e.target.value))
                                 }
                               />
                             </td>

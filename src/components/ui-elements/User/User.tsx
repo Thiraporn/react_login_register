@@ -85,14 +85,14 @@ export const User = () => {
       {/* <ul className="absolute z-50 w-72 p-2 bg-slate-50 dark:bg-gray-900 shadow-[rgba(0,_0,_0,_0.24)_0px_0px_40px] shadow-slate-400 dark:shadow-slate-700 hidden md:group-hover:flex flex-col -left-[8em] rounded-xl "> */}
       <ul
         className="  absolute z-50 w-72 p-2 bg-slate-50 dark:bg-gray-900
-    shadow-[rgba(0,_0,_0,_0.24)_0px_0px_40px]
-    shadow-slate-400 dark:shadow-slate-700
-    flex flex-col
-    left-[-8em] rounded-xl
+                shadow-[rgba(0,_0,_0,_0.24)_0px_0px_40px]
+                shadow-slate-400 dark:shadow-slate-700
+                flex flex-col
+                left-[-8em] rounded-xl
 
-    opacity-0 invisible pointer-events-none
-    group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto
-    transition-all duration-200"
+                opacity-0 invisible pointer-events-none
+                group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto
+                transition-all duration-200"
       >
         {items.map((item) => (
           <li

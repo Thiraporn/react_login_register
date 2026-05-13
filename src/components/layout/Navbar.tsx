@@ -34,7 +34,7 @@ export const Navbar = ({ menus }: Props) => {
 
   return (
     <>
-      <nav className="dark flex items-center h-16 px-3 m-0 md:px-4 dark:bg-gray-900 bg-gray-50 shadow-[0_20px_60px_rgba(0,0,0,0.3)]">
+      <nav className="dark flex items-center h-16 px-3 m-0 md:px-4 dark:bg-gray-900 bg-gray-50 shadow-[0_20px_60px_rgba(0,0,0,0.3)] fixed top-0 w-full z-50 transition-transform duration-300">
         <div className="flex items-center justify-between w-full md:mx-4 lg:mx-8 2xl:w-[80em] 2xl:mx-auto">
           <div className="flex items-center justify-center">
             <div className="md:hidden">
@@ -50,9 +50,9 @@ export const Navbar = ({ menus }: Props) => {
               <MenuLinks menuLinks={mappedMenus} />
             </div>
           </div>
-          <div className="absolute z-50 block transform -translate-x-1/2 md:hidden left-1/2">
+          {/* <div className="absolute z-50 block transform -translate-x-1/2 md:hidden left-1/2">
             <Logo />
-          </div>
+          </div> */}
           <div className="flex items-center justify-center gap-4">
             <User />
           </div>

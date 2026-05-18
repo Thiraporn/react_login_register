@@ -7,7 +7,6 @@ export * from "./Page500";
 export * from "./Contact";
 export * from "./Unauthorized";
 export * from "./PersistLogin";
-export * from "./ManageMenus";
-export * from "./FromElements";
+export * from "./ManageMenus"; 
 export * from "./ManageUsers";  
 export * from "./ManagePermissions";

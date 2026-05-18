@@ -3,3 +3,6 @@ export * from "./MenuLinks";
 export * from "./MobileMenu";
 export * from "./MenuResponsive";
 export * from "./User";
+export * from "./PageHeader";
+export * from "./FormElements";
+export * from "./Modal";

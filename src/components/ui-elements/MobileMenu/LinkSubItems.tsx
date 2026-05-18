@@ -3,7 +3,7 @@ import { SubLinksBoxProps } from "./interfaces";
 export const SubLinksBox = (props: SubLinksBoxProps) => {
   const { subLinks, extraLinks } = props;
   return (
-    <div className="absolute top-10 w-fit bg-slate-50 dark:bg-gray-900 shadow-[rgba(0,_0,_0,_0.24)_0px_0px_40px] shadow-slate-400 dark:shadow-slate-700 hidden group-hover:flex rounded-xl">
+    <div className="absolute  z-50  top-10 w-fit bg-slate-50 dark:bg-gray-900 shadow-[rgba(0,_0,_0,_0.24)_0px_0px_40px] shadow-slate-400 dark:shadow-slate-700 hidden group-hover:flex rounded-xl">
       <ul className="p-2 h-fit w-96 flex-col ">
         {subLinks.map((subLink) => (
           <li

@@ -8,7 +8,7 @@ export const Page500 = () => {
                     <div className="text-9xl font-bold text-indigo-600 mb-4">500</div>
                     <h1 className="text-4xl font-bold text-gray-800 mb-6">Internal Server Error</h1>
                     <p className="text-lg text-gray-600 mb-8">We apologize for the inconvenience. Please try again later..</p>
-                    <Link to="/home"
+                    <Link to="/Home"
                         className="inline-block bg-indigo-600 text-white font-semibold px-6 py-3 rounded-md hover:bg-indigo-700 transition-colors duration-300">
                         Go Back Home
                     </Link>

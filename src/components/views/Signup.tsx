@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import axios from "@/api/axios";
 import { useNavigate } from "react-router-dom";
+import { Info } from "lucide-react";
 
 //regex for user and password, if the input is out of range, it will be rejected
 //const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;//user reject when out of rage
@@ -88,7 +89,7 @@ export const Signup = () => {
                 setErrMsg("Username Taken");
             } else {
                 setErrMsg("Registration Failed");
-            } 
+            }
             errRef.current?.focus();
 
         }
@@ -185,10 +186,15 @@ export const Signup = () => {
                 <FontAwesomeIcon icon={faInfoCircle} />
                 Must match password in put field.
             </p>
-            <div className={`field btn ${(!validEmailSignup || !validPwd || !validMatch) ? "disabled" : ""}`}>
+            <p id="infonote" className="instructions">
+                <Info size={18} className="text-red-500 inline-block mr-2" />
+                This function is not available.
+            </p>
+            {/* //   มีหน้า Manage User แล้ว   */}
+            {/* <div className={`field btn ${(!validEmailSignup || !validPwd || !validMatch) ? "disabled" : ""}`}>
                 <div className="btn-layer"></div>
                 <input type="submit" value="Signup" disabled={!validEmailSignup || !validPwd || !validMatch} />
-            </div>
+            </div> */}
         </form>
     )
 }

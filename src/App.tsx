@@ -8,7 +8,6 @@ import {
   Contact,
   Unauthorized,
   PersistLogin,
-  FromElements,
   ManageMenus,
   ManageUsers,
   ManagePermissions,
@@ -37,7 +36,6 @@ function App() {
               <Route path="/ManageMenus" element={<ProtectedRoute> <ManageMenus /> </ProtectedRoute>} />
               <Route path="/ManageUsers" element={<ProtectedRoute><ManageUsers /></ProtectedRoute>} />
               <Route path="/ManagePermissions" element={<ProtectedRoute><ManagePermissions /></ProtectedRoute>} />
-              {/* <Route path="/FromElements" element={<ProtectedRoute><FromElements /></ProtectedRoute>} /> */}
             </Route>
           </Route>
           <Route path="*" element={<Page404 />} />

@@ -81,8 +81,12 @@ export const ManagePermissions = () => {
 
     } catch (err: any) {
       hideModal();
-      showModal("error", "Save failed");
-      console.log(err);
+      showModal("error", err?.response?.data?.message ? err.response.data.message : "Save failed");
+      console.log("FULL ERROR:", err);
+
+      console.log("STATUS:", err?.response?.status);
+      console.log("DATA:", err?.response?.data);
+      console.log("MESSAGE:", err?.response?.data?.message);
       setTimeout(() => {
         hideModal();
       }, 1200);

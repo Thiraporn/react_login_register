@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CheckCircle, AlertCircle, Info } from "lucide-react";
+import { CheckCircle, AlertCircle, Info, Search } from "lucide-react";
 
 type InputProps = {
   label?: string;//   optional
@@ -19,6 +19,7 @@ type SuggestionItem = {
   code: string;
   nameTH: string;
   nameEN?: string;
+  dataObject?: object;
 };
 export const Input = ({ label, type = "text", placeholder, name, value, onChange, onFocus, onBlur, required }: InputProps) => {
   return (
@@ -51,6 +52,7 @@ export const InputWithValidation = ({
   required,
   describedBy,
   errorMessage = "This is an error message.",
+  disabled = false
 }: {
   name: string;
   placeholder?: string;
@@ -60,6 +62,7 @@ export const InputWithValidation = ({
   required?: boolean;
   describedBy?: string;
   errorMessage?: React.ReactNode;
+  disabled?: boolean;
 }) => {
   const [focus, setFocus] = useState(false);
   const [touched, setTouched] = useState(false);
@@ -88,10 +91,14 @@ export const InputWithValidation = ({
             ${value.length === 0 ? "border-gray-300" : ""}
             ${showSuccess ? "border-green-500" : ""}
             ${showError ? "border-red-500" : ""}
+            ${disabled
+              ? "bg-gray-100 text-gray-500 cursor-not-allowed border-gray-200"
+              : "bg-white"}
           `}
 
           aria-describedby={describedBy}
           aria-invalid={!isValid}
+          disabled={disabled}
         />
         {/* ICON */}
         {showIcon && (
@@ -117,6 +124,95 @@ export const InputWithValidation = ({
 
 
       </p>
+    </div>
+  );
+};
+
+export const InputSearch = ({
+  label = "Search",
+  placeholder = "Search...",
+  value,
+  suggestions = [],
+  onSelect,
+  onBlurDesc,
+  onChange,
+  mode = "create"
+}: {
+  label?: string;
+  placeholder?: string;
+  value?: string;
+  disabled?: boolean;
+  className?: string;
+  suggestions?: SuggestionItem[];
+  onSelect?: (item: SuggestionItem) => void;
+  onBlurDesc?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  mode?: "create" | "edit";
+}) => {
+  return (
+    <div className="space-y-2">
+
+      {/* LABEL */}
+      <label htmlFor="search-input" className="block text-sm font-medium text-gray-700"  >
+        {label}
+      </label>
+
+      {/* SEARCH BOX */}
+      <div className="relative">
+        {/* ICON */}
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+        {/* INPUT */}
+        <input
+          id="search-input"
+          type="text"
+          placeholder={placeholder}
+          value={value}
+          onChange={onChange}
+          className="w-full rounded-xl border border-gray-300 bg-white py-3 pl-10 pr-4 text-sm shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+        />
+
+        {/* SUGGESTIONS */}
+        {suggestions.length > 0 && (
+          <div className="absolute z-50 mt-2 w-full overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg">
+
+            {suggestions.map((item) => (
+              <button
+                key={item.code}
+                type="button"
+                onClick={() => onSelect?.(item)}
+                className="w-full border-b px-4 py-3 text-left transition hover:bg-gray-100 last:border-b-0"
+              >
+                <div className="text-sm font-medium text-gray-800">
+                  {item.code ?? "No code"}
+                </div>
+
+                <div className="text-xs text-gray-500">
+                  {item.nameTH ?? item.nameEN ?? "Description not available"}
+                </div>
+
+              </button>
+            ))}
+
+          </div>
+        )}
+
+      </div>
+
+      {/* MODE BADGE */}
+      {/* <div className="flex items-center gap-2 text-xs">
+        <span
+          className={`rounded-full px-2 py-1 font-medium ${mode === "edit"
+            ? "bg-amber-100 text-amber-700"
+            : "bg-emerald-100 text-emerald-700"
+            }`}
+        >
+          {mode === "edit"
+            ? "EDIT MODE"
+            : "CREATE MODE"}
+        </span>
+
+      </div> */}
+
     </div>
   );
 };
@@ -191,7 +287,7 @@ export const InputCombo = ({
           >
             <div className="font-medium">{item.code}</div>
             <div className="text-xs text-gray-500">
-              {item.nameTH}
+              {item.nameTH ?? item.nameEN ?? "Description not available"}
             </div>
           </div>
         ))}

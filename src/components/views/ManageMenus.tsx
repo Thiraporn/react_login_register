@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate"; //Custom Hook สำหรับเรียก API แบบ authenticated
 import { PageHeader, Input, Radio, TextArea, InputCombo, TooltipButton, InputWithValidation } from "@/components/ui-elements";//Custom UI Component
 import { useModal } from "@/context/ModalProvider";//Custom Global Modal Context
-import { Plus, Save, Pencil, Trash2 } from "lucide-react";
+import { Plus, Save, Pencil, Trash2, AlertCircle } from "lucide-react";
 import { ICON_MAP, ICON_KEYS } from "@/components/IconPicker/iconRegistry"//ระบบเก็บ icon ทั้งหมด
 import { toPascalCaseUrl, toUpperCaseNoSpace } from "@/utils/commonUtils";
 import { AxiosResponse } from "axios";
@@ -206,8 +206,8 @@ export const ManageMenus = () => {
     //if (!form.code) newErrors.code = "Code is required"; backend is provided
     if (!form.nameTH) newErrors.nameTH = "Thai name is required";
     if (!form.nameEN) newErrors.nameEN = "English name is required";
-    if (!form.groupCode) newErrors.groupCode = "English name is required";
-    // if (!form.nameJP) newErrors.nameJP = "Japanese name is required";
+    if (!form.groupCode) newErrors.groupCode = "Group code is required";
+    if (!form.url) newErrors.url = "URL is required";
     //if (form.code.length < 3) newErrors.code = "Code too short";
 
     return newErrors;
@@ -272,11 +272,14 @@ export const ManageMenus = () => {
 
     } catch (err: any) {
       hideModal();
-      showModal("error", "Save failed");
-      console.log(err);
+      showModal("error", err?.response?.data?.message ? err.response.data.message : "Save failed");
+      console.log("FULL ERROR:", err);
+      console.log("STATUS:", err?.response?.status);
+      console.log("DATA:", err?.response?.data);
+      console.log("MESSAGE:", err?.response?.data?.message);
       setTimeout(() => {
         hideModal();
-      }, 1200);
+      }, 1800);
     }
   };
 
@@ -395,7 +398,72 @@ export const ManageMenus = () => {
 
           {/* Section:  Parent Menus  */}
           <div id="parentMenu" className="bg-white rounded-2xl shadow p-6 space-y-4">
-            <h2 className="text-lg font-semibold mb-4">Menus Management</h2>
+            {/* header */}
+            {/* <h2 className="text-lg font-semibold mb-4">Menus Management</h2> */}
+            {/* MODE BADGE */}
+            {/* <div className="flex items-center gap-2 text-xs">
+              <span
+                className={`rounded-full px-2 py-1 font-medium ${mode === "edit"
+                  ? "bg-amber-100 text-amber-700"
+                  : "bg-emerald-100 text-emerald-700"
+                  }`}
+              >
+                {mode === "edit"
+                  ? "EDIT MODE"
+                  : "CREATE MODE"}
+              </span>
+
+            </div> */}
+
+
+            {/* HEADER */}
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-6">
+              {/* TITLE */}
+              <div>
+                <h2 className="text-2xl font-bold tracking-tight text-gray-800">
+                  Menus Management
+                </h2>
+                <p className="text-sm text-gray-500 mt-1">
+                  Create and manage application menus
+                </p>
+              </div>
+              {/* MODE BADGE */}
+              <div className="flex items-center">
+                <span
+                  className={` inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold tracking-wide shadow-sm border ${mode === "edit"
+                    ? "bg-amber-50 text-amber-700 border-amber-200"
+                    : "bg-emerald-50 text-emerald-700 border-emerald-200"}`}>
+
+                  {/* STATUS DOT */}
+                  <span
+                    className={`h-2 w-2 rounded-full${mode === "edit"
+                      ? "bg-amber-500"
+                      : "bg-emerald-500"}`} />  {mode === "edit" ? "EDIT MODE" : "CREATE MODE"}
+                </span>
+
+              </div>
+
+            </div>
+            {/* ⚠️ WARNING BOX */}
+            {Object.keys(errors).length > 0 && (
+              <div role="alert" className=" flex flex-col sm:flex-row  sm:items-start  gap-2 sm:gap-3  p-4 mb-4  text-sm rounded-xl border bg-red-50 border-red-200 text-red-700  ">
+
+                <AlertCircle className="w-5 h-5 shrink-0 mt-0.5 sm:mt-0 text-red-500" />
+
+                <div className="flex flex-col">
+                  <span className="font-semibold">
+                    Please fix the following errors:
+                  </span>
+
+                  <ul className="list-disc ml-5 mt-1 space-y-1">
+                    {Object.values(errors).map((msg: any, i) => (
+                      <li key={i}>{msg}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            )
+            }
             {/* Group input code+desc */}
             <InputCombo
               codePlaceholder="Code"

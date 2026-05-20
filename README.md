@@ -1,5 +1,5 @@
 # React Login & Register UI (Vite)
-![status](https://img.shields.io/badge/status-in%20progress-yellow)
+![status](https://img.shields.io/badge/status-complete-brightgreen)
 
 ## 📌 Overview
 This project is a frontend application built with React for user authentication (Login & Register).
@@ -36,12 +36,38 @@ The goal of this project is to practice building clean UI, handling form validat
  ***Remark : Vite is required as a build tool when using React, because React cannot run directly in the browser like plain HTML. </a>***
     
 
-## 🚀 Demo
-- Here BackEnd Code :  <a href="https://github.com/Thiraporn/expressjs_authenjwtswithmongodb"  target="_blank">Express Js</a>  
- - Demo UI           :  <a href="https://login-register-ui-demo.netlify.app/" target="_blank">View Demo</a> 
+## 🚀 Integration History 
 
-    ***Remark : I plan to integrate this project with a spring boot security  <a href="https://github.com/Thiraporn/SpringBoot_AuthenWithJWTs"> Back End Repo </a>***
-
+- Initial backend implementation using Express.js JWT Authentication:  
+  <img src="https://img.shields.io/badge/Current-Refactoring-orange?style=flat-square"/>
+  <img src="https://skillicons.dev/icons?i=nodejs,expressjs,mongodb" height="20"/>  
+  <a href="https://github.com/Thiraporn/expressjs_authenjwtswithmongodb" target="_blank">
+  Express.js Backend Repository
+  </a>|<a href="https://expressjs-authenjwtswithmongodb.onrender.com" target="_blank">
+  API Health Check
+  </a>
+  <br/>  
+  <br/>  
+- Integrated and migrated authentication system to Spring Boot Security with JWT:   
+  <img src="https://img.shields.io/badge/Current-Now Focus-success?style=flat-square"/>
+  <img src="https://skillicons.dev/icons?i=java,spring,mongodb" height="20"/>  
+  <a href="https://github.com/Thiraporn/SpringBoot_AuthenWithJWTs" target="_blank">
+    Spring Boot Backend Repository
+  </a>|<a href="https://springboot-authenjwtswithmongodb.onrender.com" target="_blank">
+    API Health Check
+  </a> 
+  <br/>  
+  <br/> 
+- Frontend React Application:  
+  <img src="https://img.shields.io/badge/Current-Now Focus-success?style=flat-square"/> 
+  <img src="https://skillicons.dev/icons?i=react,typescript,tailwind,vite" height="20"/>  
+  <a href="https://github.com/Thiraporn/react_login_register" target="_blank">
+  React Frontend Repository
+  </a>|<a href="https://login-register-ui-demo.netlify.app" target="_blank">
+  View Demo
+  </a>
+  <br/>  
+  <br/> 
 
 <!--deploy react UI on netlify  https://app.netlify.com/projects/login-register-ui-demo/overview  user github -->
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const getLocalStorage = (key, initValue) => {
 
@@ -26,32 +26,44 @@ const getLocalStorage = (key, initValue) => {
 }
 
 const useLocalStorage = (key, initValue) => {
-    const [value, setValue] = useState(() => {
-        return getLocalStorage(key, initValue);
-    }); 
-    useEffect(() => {
-            localStorage.setItem(key, JSON.stringify(value)); 
-            // 🔴 check persist from localStorage
-            const persist = JSON.parse(localStorage.getItem('persist') || 'false');
+        const [value, setValue] = useState(() => {
+        const stored = getLocalStorage(key, initValue);
+        console.log("GET (init)", key, stored)
+       return stored;
+}); 
+    // useEffect(() => {
+    //         localStorage.setItem(key, JSON.stringify(value)); 
+    //         // 🔴 check persist from localStorage
+    //         const persist = JSON.parse(localStorage.getItem('persist') || 'false');
 
-            // ❗ ถ้า persist = false → ไม่ต้อง set key อื่น
-            if (persist === false && key !== 'persist') {
-                Object.keys(localStorage).forEach(k => {
-                        if (k !== 'persist') {
-                            localStorage.setItem(k, JSON.stringify(initValue));
-                        }
-                    });
-                localStorage.setItem('persist', JSON.stringify(persist)); 
+    //         // ❗ ถ้า persist = false → ไม่ต้อง set key อื่น
+    //         if (persist === false && key !== 'persist') {
+    //             Object.keys(localStorage).forEach(k => {
+    //                     if (k !== 'persist') {
+    //                         localStorage.setItem(k, JSON.stringify(initValue));
+    //                     }
+    //                 });
+    //             localStorage.setItem('persist', JSON.stringify(persist)); 
+    //             return;
+    //         }
+
+    //     //localStorage.setItem(key, JSON.stringify(value));
+    // }, [key, value]);
+
+    const isInitialMount = useRef(true); //sync เฉพาะตอน “ไม่ใช่ reset”
+    useEffect(() => {
+                if (isInitialMount.current) {
+                isInitialMount.current = false;
                 return;
             }
-
-        //localStorage.setItem(key, JSON.stringify(value));
-    }, [key, value]);
-
- 
-
-
-    return [value, setValue];
+            const stored = localStorage.getItem(key); 
+            if (stored === null || JSON.parse(stored) !== value) {
+                localStorage.setItem(key, JSON.stringify(value));
+            }
+            console.log("SET", key, value);
+        }, [key, value]);
+     
+    return [value, setValue]; 
 
 
 }

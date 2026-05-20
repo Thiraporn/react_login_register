@@ -1,7 +1,7 @@
 import { ClockIcon, PlusCircleIcon, ListBulletIcon, ReceiptRefundIcon} from '@heroicons/react/24/solid'
 export const navigationLinks = [
   {
-    name: "Resume",
+    name: "Intro",
     subLinks: [
       {
         name: "Work time",
@@ -11,11 +11,11 @@ export const navigationLinks = [
         icon: <ClockIcon />,
       },]
   }, { 
-    name: "Projects",
+    name: "Portfolio",
     subLinks: [
       {
-        name: "Create",
-        description: "Create a new project",
+        name: "OList e-commerce",
+        description: "Data Analysis(Projects)",
         link: "/create-project",
         color: "bg-green-300 dark:bg-green-700",
         icon: <PlusCircleIcon />,

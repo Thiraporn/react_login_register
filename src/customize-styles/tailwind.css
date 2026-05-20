@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+    background: -webkit-linear-gradient(left, #B0DB9C, #CAE8BD, #DDF6D2, #ECFAE5);
+}
+
+:root {
+    color-scheme: light dark;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+}
+
+.input {
+    @apply border rounded-xl px-4 py-2 w-full outline-none focus:ring-2 focus:ring-blue-500;
+}
+
+.instructions {
+    font-size: 0.875rem;
+    border-radius: 0.5rem;
+    background-color: #1f2937;
+    /* gray-800 */
+    color: #f9fafb;
+    padding: 0.5rem 0.75rem;
+    margin-top: 0.25rem;
+    line-height: 1.4;
+}
+
+.offscreen {
+    position: absolute;
+    z-index: 50;
+    left: -9999px;
+}

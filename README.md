@@ -8,30 +8,39 @@ It is designed as part of my learning journey to understand how frontend applica
 
 The goal of this project is to practice building clean UI, handling form validation, and integrating with real backend APIs.
 
-## 🎯 Features
-- 🔐 User Login
-- 📝 User Registration
-- ✅ Form Validation 
-- 🎨 Clean and simple UI design
-- 🔏 Integrate with backend (JWT Authentication)   
-
+## 🧩 Features  
+  
+- Responsive Login & Register UI
+- Clean and simple UI design
+- Form validation handling
+- Reusable React components
+- Clean folder structure for scalability
+- Mobile-friendly layout
+- Fast development setup with Vite
+- Integrate with backend (JWT Authentication)  
  
 
 ## 🛠 Tech Stack
-1. Typescript (.ts  )
-2. TypeScript+React (.tsx)
-3. Tailwind CSS
-4. Vite 
-5. heroicons/react
-6. deploy react UI on netlify  
-7. icon lucide-react  
+
+- TypeScript (.ts)
+- React + TypeScript (.tsx)
+- Tailwind CSS
+- Vite
+- Heroicons React
+- Lucide React
+- Font Awesome
+- Netlify (Free-tier Deployment)
 
 
-## Install 
-    rm -rf node_modules
-    rm package-lock.json
-    npm install
-    npm install -D tailwindcss postcss autoprefixer
+## 📦 Installation
+
+```bash
+rm -rf node_modules
+rm package-lock.json
+
+npm install
+npm install -D tailwindcss postcss autoprefixer
+```
 
  ***Remark : Vite is required as a build tool when using React, because React cannot run directly in the browser like plain HTML. </a>***
     
@@ -62,12 +71,14 @@ The goal of this project is to practice building clean UI, handling form validat
   <img src="https://img.shields.io/badge/Current-Now Focus-success?style=flat-square"/> 
   <img src="https://skillicons.dev/icons?i=react,typescript,tailwind,vite" height="20"/>  
   <a href="https://github.com/Thiraporn/react_login_register" target="_blank">
-  React Frontend Repository
+  This Repository
   </a>|<a href="https://login-register-ui-demo.netlify.app" target="_blank">
   View Demo
   </a>
   <br/>  
   <br/> 
+ 
+ 
 
 <!--deploy react UI on netlify  https://app.netlify.com/projects/login-register-ui-demo/overview  user github -->
 

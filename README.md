@@ -78,7 +78,33 @@ npm install -D tailwindcss postcss autoprefixer
   <br/>  
   <br/> 
  
+ ## 🖼️ Sample Screens
+
  
+###  🔑 Login
+
+User authentication page with JWT-based login and role-based access control.
+ 
+![Login](documents/images/Login-Screen.png)
+
+###  🗂️ Menu Management 
+  
+Manage application menus and submenus dynamically through the administration panel.
+
+![ManageMenus-SubMenus](documents/images/ManageMenus-SubMenus-Screen.png)
+
+### 🧭 Navigation Preview
+
+After creating a menu, users can view the menu hierarchy by hovering over the navigation bar.
+
+![Home-Screen-Menu](documents/images/Home-Screen-Menu2.png)
+
+### 🛡️ Role & Permission Management
+
+Configure role-based permissions and control user access to system features.
+
+![ManagePermissions](documents/images/ManagePermissions-Screen.png)
+
 
 <!--deploy react UI on netlify  https://app.netlify.com/projects/login-register-ui-demo/overview  user github -->
 

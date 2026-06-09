@@ -8,6 +8,13 @@ It is designed as part of my learning journey to understand how frontend applica
 
 The goal of this project is to practice building clean UI, handling form validation, and integrating with real backend APIs.
 
+## 🏗 High-Level Architecture 
+
+This diagram provides an overview of the application's architecture, showing how the React frontend communicates with the Spring Boot backend through REST APIs, using JWT-based authentication and MongoDB for data persistence.
+
+![High-Level Architecture](documents/images/high-level-architecture.png)
+
+
 ## 🧩 Features  
   
 - Responsive Login & Register UI
